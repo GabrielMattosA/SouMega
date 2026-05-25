@@ -5,6 +5,7 @@ import cors from "cors"
 import swaggerUi from "swagger-ui-express"
 
 import memberRoutes from "./src/routes/memberRoutes.js"
+import projectRoutes from "./src/routes/projectRoutes.js"
 import swaggerSpec from "./src/swagger.js"
 
 dotenv.config()
@@ -21,6 +22,7 @@ app.use(
 )
 
 app.use("/members", memberRoutes)
+app.use("/projects", projectRoutes)
 
 app.listen(process.env.PORT, () => {
   console.log("Servidor rodando")

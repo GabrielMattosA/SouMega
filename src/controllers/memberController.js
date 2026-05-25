@@ -31,7 +31,11 @@ export async function getMembers(req, res) {
 
   try {
 
-    const members = await prisma.member.findMany()
+    const members = await prisma.member.findMany({
+      include: {
+        projects: true
+      }
+    })
 
     res.json(members)
 
