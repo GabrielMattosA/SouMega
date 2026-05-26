@@ -6,7 +6,7 @@ function MemberPage() {
     
     const [membroSelecionado, setMembroSelecionado] = React.useState(null);
     const [Cadastro, setCadastro] = React.useState(false);
-
+    const [Editando, setEditando] = React.useState(false);
     const [novoMembro, setNovoMembro] = React.useState({
         nome: '',
         rga: '',
@@ -17,12 +17,19 @@ function MemberPage() {
     });
 
     const cadastrar = () => {
-        const membroFormatado = {
-            ...novoMembro,
-            id: Date.now() // Gerar um ID único para o novo membro
-        };
-        setMembrosDaMega([...membrosDaMega, membroFormatado]);
-
+        if (Editando) {
+            const membrosAtualizados = membrosDaMega.map((membro) =>
+                membro.id === Editando ? { ...membro, ...novoMembro, id: Editando } : membro
+            );
+            setMembrosDaMega(membrosAtualizados);
+            setEditando(null);
+        } else {
+            const membroFormatado = {
+                ...novoMembro,
+                id: Date.now() // Gerar um ID único para o novo membro
+            };
+            setMembrosDaMega([...membrosDaMega, membroFormatado]);
+        }
         setCadastro(false);
 
         setNovoMembro({
@@ -41,6 +48,15 @@ function MemberPage() {
         setMembroSelecionado(null);
     };
 
+    const editarMembro = (membro) => {
+        setNovoMembro(membro);
+
+        setEditando(membro.id);
+
+        setMembroSelecionado(null);
+
+        setCadastro(true);
+    };
     const [membrosDaMega, setMembrosDaMega] = React.useState([
         {   id: 1, 
             nome: "Antonio Castro",
@@ -163,12 +179,18 @@ function MemberPage() {
                     <p><strong>Diretoria:</strong> {membroSelecionado.diretoria || 'Não informado'}</p>
                     <p><strong>Time Principal:</strong> {membroSelecionado.time || 'Não informado'}</p>
                 </div>
-                <div className="mt-6 pt-4 border-t flex justify-end">
+                <div className="mt-6 pt-4 border-t flex justify-center gap-4">
                         <button 
                             onClick={() => excluirMembro(membroSelecionado.id)}
                             className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded font-bold text-sm transition-colors"
                         >
                             Excluir Membro
+                        </button>
+                        <button 
+                            onClick={() => editarMembro(membroSelecionado)}
+                            className="px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white rounded font-bold text-sm transition-colors"
+                        >
+                            Editar Membro
                         </button>
                     </div>
             </div>
@@ -178,7 +200,9 @@ function MemberPage() {
             <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
             <div className="bg-white p-6 rounded shadow-lg w-full max-w-md max-h-[85vh] flex flex-col overflow-y-auto">
                 <div className= "flex justify-between items-center mb-6">
-                <h3 className="text-xl font-bold">Cadastrar Novo Membro</h3>
+                <h3 className="text-xl font-bold">
+                    {Editando ? 'Editar Membro' : 'Cadastrar Novo Membro'}
+                </h3>
                 <button onClick={() => setCadastro(false)} className="text-red-500 hover:text-red-700 transition-colors">
                 <X className="w-6 h-6" />
                 </button>
@@ -254,7 +278,7 @@ function MemberPage() {
                     <div className="space-y-2">
                     <button type='button' onClick={cadastrar}
                     className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded font-bold mt-4">
-                        Cadastrar
+                        {Editando ? 'Salvar Alterações' : 'Cadastrar Membro'}
                     </button>
                 </div>
             </div>
