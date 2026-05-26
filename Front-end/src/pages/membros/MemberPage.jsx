@@ -21,13 +21,7 @@ function MemberPage() {
             ...novoMembro,
             id: Date.now() // Gerar um ID único para o novo membro
         };
-        if (novoMembro.cargo === 'Presidente') {
-            setPresidente([...presidente, membroFormatado]);
-        } else if (novoMembro.cargo === 'Diretor(a)') { 
-            setDiretores([...diretores, membroFormatado]);
-        } else {
-            setMembros([...membros, membroFormatado]);
-        }
+        setMembrosDaMega([...membrosDaMega, membroFormatado]);
 
         setCadastro(false);
 
@@ -41,19 +35,62 @@ function MemberPage() {
         });
     };
     
-    const [presidente, setPresidente] = React.useState([
-        { id: 1, nome: "Antonio Castro" }
-    ]);
+    const excluirMembro = (id) => {
+        setMembrosDaMega(membrosDaMega.filter((membro) => membro.id !== id));
+        
+        setMembroSelecionado(null);
+    };
 
-    const [diretores, setDiretores] = React.useState([
-        { id: 2, nome: "Jean Flávio" },
-        { id: 3, nome: "Eduarda Moretto" }
-    ]);
+    const [membrosDaMega, setMembrosDaMega] = React.useState([
+        {   id: 1, 
+            nome: "Antonio Castro",
+            rga: "2026.0001.001-0", 
+            email: "antonio@mega.com", 
+            cargo: "Presidente", 
+            diretoria: "Presidência", 
+            time: "Front-end"
 
-    const [membros, setMembros] = React.useState([
-        { id: 4, nome: "Gabriel Mattos" },
-        { id: 5, nome: "Heitor " },
-        { id: 6, nome: "Diogo" }
+         },
+        {   id: 2, 
+            nome: "Jean Flávio",
+            rga: "2026.0002.002-0",
+            email: "jean@mega.com",
+            cargo: "Diretor(a)",
+            diretoria: "Gestão de Pessoas",
+            time: "Back-end"
+        },
+        {   id: 3, 
+            nome: "Eduarda Moretto",
+            rga: "2026.0003.003-0",
+            email: "eduarda@mega.com",
+            cargo: "Diretor(a)",
+            diretoria: "Marketing",
+            time: "UI/UX Design"
+        },
+        {   id: 4, 
+            nome: "Gabriel Mattos",
+            rga: "2026.0004.004-0",
+            email: "gabriel@mega.com",
+            cargo: "Membro",
+            diretoria: "Financeiro",
+            time: "Front-end"
+        },
+        {   id: 5, 
+            nome: "Heitor ",
+            rga: "2026.0005.005-0",
+            email: "heitor@mega.com",
+            cargo: "Membro",
+            diretoria: "Projetos",
+            time: "Back-end"
+        },
+        {   id: 6, 
+            nome: "Diogo",
+            rga: "2026.0006.006-0",
+            email: "diogo@mega.com",
+            cargo: "Membro",
+            diretoria: "Marketing",
+            time: "Back-end"
+        }
     ]);
 
     return (
@@ -68,7 +105,7 @@ function MemberPage() {
         <div className="mb-6">
             <h2 className="text-xl font-semibold mb-2">Presidente</h2>
             <ul>
-            {presidente.map((pessoa) => (
+            {membrosDaMega.filter((pessoa) => pessoa.cargo === 'Presidente').map((pessoa) => (
                 <li key={pessoa.id} className="flex items-center gap-4 mb-2">
                 <span>{pessoa.nome}</span>
                 <button onClick={() => setMembroSelecionado(pessoa)}
@@ -83,7 +120,7 @@ function MemberPage() {
         <div className="mb-6">
             <h2 className="text-xl font-semibold mb-2">Diretores</h2>
             <ul>
-            {diretores.map((pessoa) => (
+            {membrosDaMega.filter((pessoa) => pessoa.cargo === 'Diretor(a)').map((pessoa) => (
                 <li key={pessoa.id} className="flex items-center gap-4 mb-2">
                 <span>{pessoa.nome}</span>
                 <button onClick={() => setMembroSelecionado(pessoa)}
@@ -98,7 +135,7 @@ function MemberPage() {
         <div className="mb-6">
             <h2 className="text-xl font-semibold mb-2">Membros</h2>
             <ul>
-            {membros.map((pessoa) => (
+            {membrosDaMega.filter((pessoa) => pessoa.cargo === 'Membro').map((pessoa) => (
                 <li key={pessoa.id} className="flex items-center gap-4 mb-2">
                 <span>{pessoa.nome}</span>
                 <button onClick={() => setMembroSelecionado(pessoa)}
@@ -118,12 +155,22 @@ function MemberPage() {
                 <X className="w-6 h-6" />
                 </button>
                 </div>
-                <div className= "space-y-2">
-                <p><strong>Nome:</strong> {membroSelecionado.nome}</p>
-                <p className="text-sm text-gray-500 italic mt-4">
-                (Informações futuras)
-                </p>
-            </div>
+                <div className="space-y-3 text-sm text-gray-700">
+                    <p><strong>Nome:</strong> {membroSelecionado.nome}</p>
+                    <p><strong>RGA:</strong> {membroSelecionado.rga || 'Não informado'}</p>
+                    <p><strong>Email:</strong> {membroSelecionado.email || 'Não informado'}</p>
+                    <p><strong>Cargo:</strong> {membroSelecionado.cargo || 'Não informado'}</p>
+                    <p><strong>Diretoria:</strong> {membroSelecionado.diretoria || 'Não informado'}</p>
+                    <p><strong>Time Principal:</strong> {membroSelecionado.time || 'Não informado'}</p>
+                </div>
+                <div className="mt-6 pt-4 border-t flex justify-end">
+                        <button 
+                            onClick={() => excluirMembro(membroSelecionado.id)}
+                            className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded font-bold text-sm transition-colors"
+                        >
+                            Excluir Membro
+                        </button>
+                    </div>
             </div>
             </div>
         )}
@@ -177,7 +224,7 @@ function MemberPage() {
                     <div>
                         <label className="block text-sm font-medium mb-2">Diretoria</label>
                         <div className="grid grid-cols-2 gap-2">
-                            {['Presidência', 'Projetos', 'Comercial', 'Marketing', 'Gestão de Pessoas'].map((diretoria) => (
+                            {['Presidência', 'Projetos', 'Comercial', 'Marketing', 'Gestão de Pessoas', 'Financeiro'].map((diretoria) => (
                                 <label key={diretoria} className="flex items-center gap-2 p-2 border rounded hover:bg-gray-50 cursor-pointer text-sm">
                                     <input type="radio" name="diretoria" 
                                     value={diretoria} 
