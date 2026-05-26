@@ -19,7 +19,7 @@ function MemberPage() {
     const cadastrar = () => {
         if (Editando) {
             const membrosAtualizados = membrosDaMega.map((membro) =>
-                membro.id === Editando ? { ...membro, ...novoMembro, id: Editando } : membro
+                membro.id === Editando ? { ...novoMembro, id: Editando } : membro
             );
             setMembrosDaMega(membrosAtualizados);
             setEditando(null);
@@ -113,8 +113,12 @@ function MemberPage() {
         <div className="p-8">
         <h1 className="text-3xl font-bold mb-8 text-center">Membros da Mega</h1>
         
-        <div className="flex justify-content mb-4">
-            <button onClick={() => setCadastro(true)} className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded font-bold">
+        <div className="flex justify-start mb-4">
+            <button onClick={() => { 
+                setEditando(null);
+                setNovoMembro({ nome: '', rga: '', email: '', cargo: '', diretoria: '', time: '' });
+                setCadastro(true)}}
+                className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded font-bold">
             Cadastrar Novo Membro
             </button>
         </div>
