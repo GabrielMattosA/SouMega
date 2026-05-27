@@ -11,6 +11,13 @@ function ProjectPage() {
     const [Cadastro, setCadastro] = React.useState(false);
     const [selectedProject, setSelectedProject] = React.useState(null);
 
+    const [novoProjeto, setNovoProjeto] = React.useState({
+        name: "",
+        status: "Planejamento",
+        prazo: "",
+        descricao: ""
+    });
+
     const AbrirDescricao = (project) => {
         setSelectedProject(project);
         setAbrirModal(true);
@@ -19,6 +26,14 @@ function ProjectPage() {
     const FecharModal = () => {
         setSelectedProject(null);
         setAbrirModal(false);
+    }
+
+    const atualizaForms = (e) => {
+        const { name, value } = e.target;
+    setNovoProjeto({
+        ...novoProjeto,    
+        [name]: value    
+    });
     }
 
   return (
@@ -107,25 +122,69 @@ function ProjectPage() {
             )}
         {Cadastro && (
             <div className="fixed inset-0 z-50 bg-black/50  flex items-center justify-center p-4">
-                <div className="bg-white rounded-xl shadow-xl border border-gray-100 max-w-md w-full overflow-hidden animate-in fade-in duration-150">
+                <form className=" p-4 bg-white rounded-xl shadow-xl border border-gray-100 max-w-md w-full overflow-hidden animate-in fade-in duration-150">
                     <div className="p-6 border-b border-gray-100 flex justify-between items-center">
                         <h2 className="text-xl font-bold text-gray-900">Novo Projeto</h2>
                         <button onClick={() => setCadastro(false)} className="p-1 text-red-400 hover:text-red-600 rounded-md">
                             <X size={20} />
                         </button>
                     </div>
-                    <div className="p-6 space-y-4">
-                        <p className="text-sm text-gray-500">Formulário de cadastro de projeto (ainda em desenvolvimento)</p>
-                        <div className="flex justify-end gap-3 pt-4 border-t border-gray-100 mt-6">
+                    <div className="space-y-4">
+                        <div>
+                            <label className="block text-sm font-medium mb-1 text-gray-700">Nome do Projeto</label>
+                            <input 
+                                type="text" 
+                                name="name" 
+                                placeholder="Digite o nome do projeto" 
+                                value={novoProjeto.name}
+                                onChange={atualizaForms}
+                                className="w-full border rounded px-3 py-2 text-sm focus:outline-blue-500" 
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium mb-1 text-gray-700">Status</label>
+                            <select 
+                                name="status" 
+                                value={novoProjeto.status}
+                                onChange={atualizaForms} 
+                                className="w-full border rounded px-3 py-2 text-sm bg-white focus:outline-blue-500"
+                            >
+                                <option value="Planejamento">Planejamento</option>
+                                <option value="Em andamento">Em andamento</option>
+                                <option value="Finalizado">Finalizado</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium mb-1 text-gray-700">Prazo Final</label>
+                            <input 
+                                type="date" 
+                                name="prazo"
+                                value={novoProjeto.prazo}
+                                onChange={atualizaForms} 
+                                className="w-full border rounded px-3 py-2 text-sm focus:outline-blue-500" 
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium mb-1 text-gray-700">Descrição do Projeto</label>
+                            <textarea 
+                                rows="3"
+                                name="descricao"
+                                placeholder="Descreva brevemente os objetivos do projeto..." 
+                                value={novoProjeto.descricao}
+                                onChange={atualizaForms}
+                                className="w-full border rounded px-3 py-2 text-sm focus:outline-blue-500 resize-none"
+                            />
+                        </div>
+                        <div className="flex justify-end pt-4 border-t border-gray-100 mt-6 pb-2">
                             <button 
-                                type="button"
-                                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition font-medium text-sm shadow-sm"
-                                    >
+                                type="submit"
+                                className="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-bold text-sm transition-colors shadow-sm"
+                            >
                                 Salvar Projeto
                             </button>
                         </div>
-                    </div>
-                </div>
+                    </div> 
+                </form>
             </div>
         )}
     </div>
