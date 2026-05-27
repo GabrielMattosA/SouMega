@@ -2,15 +2,20 @@ import { z } from "zod"
 
 export const projectSchema = z.object({
 
-  title: z
+  name: z
     .string()
-    .min(3, "Título muito curto"),
+    .min(1, "O nome é obrigatório"),
 
-  description: z
+  status: z
     .string()
-    .min(5, "Descrição muito curta"),
+    .min(1, "O status é obrigatório"),
 
-  memberId: z
-    .number()
+  prazo: z
+    .string()
+    .min(1, "O prazo é obrigatório"),
+
+  descricao: z.string().optional(),
+
+  memberId: z.number()
 
 })

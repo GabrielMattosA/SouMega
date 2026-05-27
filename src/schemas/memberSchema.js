@@ -1,20 +1,23 @@
+import { z } from "zod"
+
 export const memberSchema = z.object({
 
   name: z
     .string()
-    .min(3, "Nome muito curto"),
+    .min(1, "O nome é obrigatório"),
 
   email: z
-    .email("Email inválido"),
+    .string()
+    .email("E-mail inválido"),
 
   rga: z
     .string()
-    .min(3, "RGA inválido"),
+    .min(1, "O RGA é obrigatório"),
 
-  role: z.enum([
-    "MEMBRO",
-    "DIRETOR",
-    "PRESIDENTE"
-  ])
+  cargo: z.string().optional(),
+
+  diretoria: z.string().optional(),
+
+  time: z.string().optional()
 
 })
