@@ -16,30 +16,35 @@ function MemberPage() {
         time: ''
     });
 
-    const cadastrar = () => {
-        if (Editando) {
-            const membrosAtualizados = membrosDaMega.map((membro) =>
-                membro.id === Editando ? { ...novoMembro, id: Editando } : membro
-            );
-            setMembrosDaMega(membrosAtualizados);
-            setEditando(null);
-        } else {
-            const membroFormatado = {
-                ...novoMembro,
-                id: Date.now() // Gerar um ID único para o novo membro
-            };
-            setMembrosDaMega([...membrosDaMega, membroFormatado]);
+    const cadastrar = async (e) => {
+        e.preventDefault();
+        if (!novoMembro.name.trim() || !novoMembro.email.trim() || !novoMembro.rga.trim()) {
+            alert('Por favor, preencha todos os campos obrigatórios.');
+            return;
         }
-        setCadastro(false);
+        try {
+            const resposta = await fetch(`http://localhost:3000/members/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(novoMembro)
+            });
+        if (!resposta.ok) {
+            throw new Error('Erro ao cadastrar membro:');
+        }
+        const membroCriado = await resposta.json();
 
+        setMembrosDaMega([...membrosDaMega, membroCriado]);
+        setCadastro(false);
         setNovoMembro({
-            name: '',
-            rga: '',
-            email: '',
-            cargo: '',
-            diretoria: '',
-            time: ''
+            name: '', rga: '', email: '', cargo: '', diretoria: '', time: ''
         });
+        alert('Membro cadastrado com sucesso!');
+    }   catch (error) {
+            console.error('Erro ao cadastrar membro:', error);
+            alert('Ocorreu um erro ao cadastrar o membro. Por favor, tente novamente.');
+        }
     };
     
     const excluirMembro = async (id) => {
