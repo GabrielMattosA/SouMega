@@ -7,6 +7,10 @@ import {
   updateMember
 } from "../controllers/memberController.js"
 
+import { validate } from "../middlewares/validate.js"
+
+import { memberSchema } from "../schemas/memberSchema.js"
+
 const router = express.Router()
 
 /**
@@ -40,7 +44,12 @@ router.get("/", getMembers)
  *       200:
  *         description: Membro criado
  */
-router.post("/", createMember)
+
+router.post(
+  "/",
+  validate(memberSchema),
+  createMember
+)
 
 router.delete("/:id", deleteMember)
 router.put("/:id", updateMember)
