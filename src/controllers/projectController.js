@@ -5,8 +5,6 @@ export async function createProject(req, res) {
 
   try {
 
-    projectSchema.parse(req.body)
-
     const project = await prisma.project.create({
       data: req.body
     })
