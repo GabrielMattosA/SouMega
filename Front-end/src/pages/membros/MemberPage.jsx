@@ -15,37 +15,48 @@
             time: ''
         });
 
-        const cadastrar = async (e) => {
+        const atualizarForms = (e) => {
+            const { name, value } = e.target;
+            setNovoMembro({ ...novoMembro, [name]: value });
+        };
+
+        const salvarMembro = async (e) => {
             e.preventDefault();
-            if (!novoMembro.name.trim() || !novoMembro.email.trim() || !novoMembro.rga.trim()) {
+                if (!novoMembro.name.trim() || !novoMembro.email.trim() || !novoMembro.rga.trim()) {
                 alert('Por favor, preencha todos os campos obrigatórios.');
                 return;
-            }
-            try {
-                const resposta = await fetch(`http://localhost:3000/members/`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(novoMembro)
-                });
-            if (!resposta.ok) {
-                throw new Error('Erro ao cadastrar membro:');
-            }
-            const membroCriado = await resposta.json();
-
-            setMembrosDaMega([...membrosDaMega, membroCriado]);
-            setCadastro(false);
-            setNovoMembro({
-                name: '', rga: '', email: '', cargo: '', diretoria: '', time: ''
-            });
-            alert('Membro cadastrado com sucesso!');
-        }   catch (error) {
-                console.error('Erro ao cadastrar membro:', error);
-                alert('Ocorreu um erro ao cadastrar o membro. Por favor, tente novamente.');
+                }
+                try {
+                    if (Editando) {
+                        const resposta = await fetch(`http://localhost:3000/members/${Editando.id}`, {
+                            method: 'PUT',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(novoMembro)
+                        });
+                    if (!resposta.ok) throw new Error('Erro ao editar membro.');
+                        const membroAtualizado = await resposta.json();
+                        setMembrosDaMega(membrosDaMega.map((membro) => membro.id === Editando.id ? membroAtualizado : membro));
+                        alert('Membro editado com sucesso!');
+                        setEditando(null);
+                    } else {
+                    const resposta = await fetch('http://localhost:3000/members', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(novoMembro)
+                    });
+                    if (!resposta.ok) throw new Error('Erro ao cadastrar membro.');
+                    const novoMembro = await resposta.json();
+                    setMembrosDaMega([...membrosDaMega, novoMembro]);
+                    alert('Membro cadastrado com sucesso!');
+                }
+                setCadastro(false);
+                setNovoMembro({ name: '', rga: '', email: '', cargo: '', diretoria: '', time: '' });
+            } catch (error) {
+                console.error('Erro ao salvar membro:', error);
+                alert('Ocorreu um erro ao salvar o membro. Por favor, tente novamente.');
             }
         };
-        
+
         const excluirMembro = async (id) => {
             try {
                 const resposta = await fetch(`http://localhost:3000/members/${id}`, {
@@ -60,33 +71,6 @@
             } catch (error) {
                 console.error('Erro ao excluir membro:', error);
                 alert('Ocorreu um erro ao excluir o membro. Por favor, tente novamente.');
-            }
-        };
-
-        const editarMembro = async (e) => {
-            e.preventDefault();
-            try {
-                const resposta = await fetch(`http://localhost:3000/members/${Editando.id}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(novoMembro)
-                });
-                if (!resposta.ok) {
-                    throw new Error('Erro ao editar membro:');
-                }
-                const membroAtualizado = await resposta.json();
-                setMembrosDaMega(membrosDaMega.map((membro) => membro.id === Editando.id ? membroAtualizado : membro));
-                setEditando(null);
-                setCadastro(false);
-                setNovoMembro({
-                    name: '', rga: '', email: '', cargo: '', diretoria: '', time: ''
-                });
-                alert('Membro editado com sucesso!');
-            } catch (error) {
-                console.error('Erro ao editar membro:', error);
-                alert('Ocorreu um erro ao editar o membro. Por favor, tente novamente.');
             }
         };
 
@@ -218,7 +202,7 @@
             )}
             {Cadastro && (
                 <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
-                <form onSubmit={Editando ? editarMembro : cadastrar} className="bg-white p-6 rounded shadow-lg w-full max-w-md max-h-[85vh] flex flex-col overflow-y-auto">
+                <form onSubmit={salvarMembro} className="bg-white p-6 rounded shadow-lg w-full max-w-md max-h-[85vh] flex flex-col overflow-y-auto">
                     <div className= "flex justify-between items-center mb-6">
                     <h3 className="text-xl font-bold">
                         {Editando ? 'Editar Membro' : 'Cadastrar Novo Membro'}
@@ -230,23 +214,23 @@
                     <div className= "space-y-2">
                         <div>
                             <label className="block text-sm font-medium mb-1">Nome Completo</label>
-                            <input type="text" placeholder="Digite o nome completo" 
+                            <input type="text" name="name" placeholder="Digite o nome completo" 
                             value={novoMembro.name}
-                            onChange={(e) => setNovoMembro({ ...novoMembro, name: e.target.value })}
+                            onChange={atualizarForms}
                             className="w-full border rounded px-3 py-2" />
                         </div>
                         <div>
                             <label className="block text-sm font-medium mb-1">RGA</label>
-                            <input type="text" placeholder="Ex. 0000.0000.000-0" 
+                            <input type="text" name="rga" placeholder="Ex. 0000.0000.000-0" 
                             value={novoMembro.rga}
-                            onChange={(e) => setNovoMembro({ ...novoMembro, rga: e.target.value })}
+                            onChange={atualizarForms}
                             className="w-full border rounded px-3 py-2" />
                         </div>
                         <div>
                             <label className="block text-sm font-medium mb-1">Email</label>
-                            <input type="email" placeholder="Digite o email institucional" 
+                            <input type="email" name="email" placeholder="Digite o email institucional" 
                             value={novoMembro.email}
-                            onChange={(e) => setNovoMembro({ ...novoMembro, email: e.target.value })}
+                            onChange={atualizarForms}
                             className="w-full border rounded px-3 py-2" />
                         </div>
                         <div>
@@ -257,7 +241,7 @@
                                         <input type="radio" name="cargo" 
                                         value={cargo} 
                                         checked={novoMembro.cargo === cargo}
-                                        onChange={() => setNovoMembro({ ...novoMembro, cargo: cargo })}
+                                        onChange={atualizarForms}
                                         className="text-blue-500" />
                                         <span>{cargo}</span>
                                     </label>
@@ -273,7 +257,7 @@
                                         <input type="radio" name="diretoria" 
                                         value={diretoria} 
                                         checked={novoMembro.diretoria === diretoria}
-                                        onChange={() => setNovoMembro({ ...novoMembro, diretoria: diretoria })}
+                                        onChange={atualizarForms}
                                         className="text-blue-500" />
                                         <span>{diretoria}</span>
                                     </label>
@@ -288,7 +272,7 @@
                                         <input type="radio" name="time" 
                                         value={time} 
                                         checked={novoMembro.time === time}
-                                        onChange={() => setNovoMembro({ ...novoMembro, time: time })}
+                                        onChange={atualizarForms}
                                         className="text-blue-500" />
                                         <span>{time}</span>
                                     </label>
