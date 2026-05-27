@@ -7,11 +7,24 @@ import {
   deleteProject
 } from "../controllers/projectController.js"
 
+import { validate } from "../middlewares/validate.js"
+
+import { projectSchema } from "../schemas/projectSchema.js"
+
+
 const router = express.Router()
 
-router.post("/", createProject)
+router.post(
+  "/",
+  validate(projectSchema),
+  createProject
+)
 router.get("/", getProjects)
-router.put("/:id", updateProject)
+router.put(
+  "/:id",
+  validate(projectSchema),
+  updateProject
+)
 router.delete("/:id", deleteProject)
 
 export default router

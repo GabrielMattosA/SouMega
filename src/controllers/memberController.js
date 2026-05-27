@@ -1,4 +1,5 @@
 import prisma from "../prisma/client.js"
+import { memberSchema } from "../schemas/memberSchema.js"
 
 export async function createMember(req, res) {
 
@@ -12,16 +13,10 @@ export async function createMember(req, res) {
 
   } catch(error) {
 
-    if (error.code === "P2002") {
+    const errors = error.issues?.map(err => err.message)
 
-      return res.status(400).json({
-        error: "Email já cadastrado"
-      })
-
-    }
-
-    res.status(500).json({
-      error: "Erro interno do servidor"
+    res.status(400).json({
+      errors
     })
 
   }

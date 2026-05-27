@@ -1,8 +1,11 @@
 import prisma from "../prisma/client.js"
+import { projectSchema } from "../schemas/projectSchema.js"
 
 export async function createProject(req, res) {
 
   try {
+
+    projectSchema.parse(req.body)
 
     const project = await prisma.project.create({
       data: req.body
@@ -10,10 +13,12 @@ export async function createProject(req, res) {
 
     res.status(201).json(project)
 
-  } catch (error) {
+  } catch(error) {
 
-    res.status(500).json({
-      error: "Erro ao criar projeto"
+    const errors = error.issues?.map(err => err.message)
+
+    res.status(400).json({
+      errors
     })
 
   }
