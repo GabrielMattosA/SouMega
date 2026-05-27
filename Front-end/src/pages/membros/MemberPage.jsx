@@ -42,10 +42,21 @@ function MemberPage() {
         });
     };
     
-    const excluirMembro = (id) => {
-        setMembrosDaMega(membrosDaMega.filter((membro) => membro.id !== id));
-        
-        setMembroSelecionado(null);
+    const excluirMembro = async (id) => {
+        try {
+            const resposta = await fetch(`http://localhost:3000/membros/${id}`, {
+                method: 'DELETE'
+            });
+            if (!resposta.ok) {
+                throw new Error('Erro ao excluir membro:');
+            }
+            setMembrosDaMega(membrosDaMega.filter((membro) => membro.id !== id));
+            setMembroSelecionado(null);
+            alert('Membro excluído com sucesso!');
+        } catch (error) {
+            console.error('Erro ao excluir membro:', error);
+            alert('Ocorreu um erro ao excluir o membro. Por favor, tente novamente.');
+        }
     };
 
     const editarMembro = (membro) => {
@@ -64,7 +75,7 @@ function MemberPage() {
             try{
             const resposta = await fetch('http://localhost:3000/membros');
             if (!resposta.ok) {
-                console.error('Erro ao buscar membros:', resposta.statusText);
+                console.error('Erro ao buscar membros:');
                 return;
             }
             const dados = await resposta.json();
