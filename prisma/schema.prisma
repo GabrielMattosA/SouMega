@@ -7,12 +7,26 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  MEMBRO
+  DIRETOR
+  PRESIDENTE
+}
+
 model Member {
-  id       Int       @id @default(autoincrement())
-  name     String
-  email    String    @unique
+
+  id Int @id @default(autoincrement())
+
+  name String
+
+  email String @unique
+
+  rga String @unique
+
+  role Role
 
   projects Project[]
+
 }
 
 model Project {
