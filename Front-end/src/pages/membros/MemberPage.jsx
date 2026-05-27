@@ -8,7 +8,7 @@ function MemberPage() {
     const [Cadastro, setCadastro] = React.useState(false);
     const [Editando, setEditando] = React.useState(false);
     const [novoMembro, setNovoMembro] = React.useState({
-        nome: '',
+        name: '',
         rga: '',
         email: '',
         cargo: '',
@@ -33,7 +33,7 @@ function MemberPage() {
         setCadastro(false);
 
         setNovoMembro({
-            nome: '',
+            name: '',
             rga: '',
             email: '',
             cargo: '',
@@ -57,57 +57,28 @@ function MemberPage() {
 
         setCadastro(true);
     };
-    const [membrosDaMega, setMembrosDaMega] = React.useState([
-        {   id: 1, 
-            nome: "Antonio Castro",
-            rga: "2026.0001.001-0", 
-            email: "antonio@mega.com", 
-            cargo: "Presidente", 
-            diretoria: "Presidência", 
-            time: "Front-end"
+    const [membrosDaMega, setMembrosDaMega] = React.useState([]);
 
-         },
-        {   id: 2, 
-            nome: "Jean Flávio",
-            rga: "2026.0002.002-0",
-            email: "jean@mega.com",
-            cargo: "Diretor(a)",
-            diretoria: "Gestão de Pessoas",
-            time: "Back-end"
-        },
-        {   id: 3, 
-            nome: "Eduarda Moretto",
-            rga: "2026.0003.003-0",
-            email: "eduarda@mega.com",
-            cargo: "Diretor(a)",
-            diretoria: "Marketing",
-            time: "UI/UX Design"
-        },
-        {   id: 4, 
-            nome: "Gabriel Mattos",
-            rga: "2026.0004.004-0",
-            email: "gabriel@mega.com",
-            cargo: "Membro",
-            diretoria: "Financeiro",
-            time: "Front-end"
-        },
-        {   id: 5, 
-            nome: "Heitor ",
-            rga: "2026.0005.005-0",
-            email: "heitor@mega.com",
-            cargo: "Membro",
-            diretoria: "Projetos",
-            time: "Back-end"
-        },
-        {   id: 6, 
-            nome: "Diogo",
-            rga: "2026.0006.006-0",
-            email: "diogo@mega.com",
-            cargo: "Membro",
-            diretoria: "Marketing",
-            time: "Back-end"
-        }
-    ]);
+    React.useEffect(() => {
+        const membrosSalvos = async () => {
+            try{
+            const resposta = await fetch('http://localhost:3000/membros');
+            if (!resposta.ok) {
+                console.error('Erro ao buscar membros:', resposta.statusText);
+                return;
+            }
+            const dados = await resposta.json();
+            setMembrosDaMega(dados);
+        }   catch (error) {
+            console.error('O back não está rodando ou ocorreu um erro na requisição:', error);
+            setMembrosDaMega([
+                    { id: 1, name: "Antonio Castro (Local)", rga: "2026.0001.001-0", email: "antonio@mega.com", cargo:   "Presidente", diretoria: "Presidência", time: "Front-end" }
+               ]);
+            }
+        };
+
+        membrosSalvos();
+    }, []);
 
     return (
         <div className="p-8">
@@ -116,7 +87,7 @@ function MemberPage() {
         <div className="flex justify-start mb-4">
             <button onClick={() => { 
                 setEditando(null);
-                setNovoMembro({ nome: '', rga: '', email: '', cargo: '', diretoria: '', time: '' });
+                setNovoMembro({ name: '', rga: '', email: '', cargo: '', diretoria: '', time: '' });
                 setCadastro(true)}}
                 className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded font-bold">
             Cadastrar Novo Membro
@@ -127,7 +98,7 @@ function MemberPage() {
             <ul>
             {membrosDaMega.filter((pessoa) => pessoa.cargo === 'Presidente').map((pessoa) => (
                 <li key={pessoa.id} className="flex items-center gap-4 mb-2">
-                <span>{pessoa.nome}</span>
+                <span>{pessoa.name}</span>
                 <button onClick={() => setMembroSelecionado(pessoa)}
                 className="px-2 py-1 bg-gray-200 hover:bg-gray-300 rounded font-bold">
                     <ChevronRightIcon className="w-4 h-4" />
@@ -142,7 +113,7 @@ function MemberPage() {
             <ul>
             {membrosDaMega.filter((pessoa) => pessoa.cargo === 'Diretor(a)').map((pessoa) => (
                 <li key={pessoa.id} className="flex items-center gap-4 mb-2">
-                <span>{pessoa.nome}</span>
+                <span>{pessoa.name}</span>
                 <button onClick={() => setMembroSelecionado(pessoa)}
                 className="px-2 py-1 bg-gray-200 hover:bg-gray-300 rounded font-bold">
                     <ChevronRightIcon className="w-4 h-4" />
@@ -157,7 +128,7 @@ function MemberPage() {
             <ul>
             {membrosDaMega.filter((pessoa) => pessoa.cargo === 'Membro').map((pessoa) => (
                 <li key={pessoa.id} className="flex items-center gap-4 mb-2">
-                <span>{pessoa.nome}</span>
+                <span>{pessoa.name}</span>
                 <button onClick={() => setMembroSelecionado(pessoa)}
                 className="px-2 py-1 bg-gray-200 hover:bg-gray-300 rounded font-bold">
                     <ChevronRightIcon className="w-4 h-4" />
@@ -176,7 +147,7 @@ function MemberPage() {
                 </button>
                 </div>
                 <div className="space-y-3 text-sm text-gray-700">
-                    <p><strong>Nome:</strong> {membroSelecionado.nome}</p>
+                    <p><strong>Nome:</strong> {membroSelecionado.name}</p>
                     <p><strong>RGA:</strong> {membroSelecionado.rga || 'Não informado'}</p>
                     <p><strong>Email:</strong> {membroSelecionado.email || 'Não informado'}</p>
                     <p><strong>Cargo:</strong> {membroSelecionado.cargo || 'Não informado'}</p>
@@ -215,8 +186,8 @@ function MemberPage() {
                     <div>
                         <label className="block text-sm font-medium mb-1">Nome Completo</label>
                         <input type="text" placeholder="Digite o nome completo" 
-                        value={novoMembro.nome}
-                        onChange={(e) => setNovoMembro({ ...novoMembro, nome: e.target.value })}
+                        value={novoMembro.name}
+                        onChange={(e) => setNovoMembro({ ...novoMembro, name: e.target.value })}
                         className="w-full border rounded px-3 py-2" />
                     </div>
                     <div>
