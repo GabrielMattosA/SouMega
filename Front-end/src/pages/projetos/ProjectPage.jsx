@@ -2,15 +2,29 @@ import React from "react";
 import {Folder, Calendar, X, Plus} from 'lucide-react';
 function ProjectPage() {
 
-    const [projects, setProjects] = React.useState([
-        {id: 1, name: "SouMega", status: "Em andamento", prazo : "2026-06-15", descricao: "Sistema de gerenciamento interno e alocação de membros da Mega Jr."},
-        {id: 2, name: "projeto x", status: "Planejamento", prazo : "2026-07-18", descricao: "Projeto de desenvolvimento de software"},
-        {id: 3, name: "App Y", status: "Finalizado", prazo : "2026-05-20", descricao: "Aplicativo para gerenciamento de tarefas"}
-    ]);
+    const [projects, setProjects] = React.useState([]);
     const [AbrirModal, setAbrirModal] = React.useState(false);
     const [Cadastro, setCadastro] = React.useState(false);
     const [SelectedProject, setSelectedProject] = React.useState(null);
     const [Editando, setEditando] = React.useState(null);
+
+    React.useEffect(() => {
+        const buscaProjects = async () => {
+            try {
+                const response = await fetch('http://localhost:3000/api/projects');
+                if (!response.ok) {
+                    console.error('Erro ao buscar projetos');
+                    return;
+                }
+                const dados = await response.json();
+                setProjects(dados);
+            } catch (error) {
+                console.error('Erro de rede ao buscar projetos:', error);
+            }
+        };
+        buscaProjects();
+    }, []);
+    
 
     const [novoProjeto, setNovoProjeto] = React.useState({
         name: "",
@@ -37,42 +51,65 @@ function ProjectPage() {
     });
     }
 
-    const SalvarProjeto = (e) => {
+    const SalvarProjeto = async (e) => {
         e.preventDefault();
         if (!novoProjeto.name.trim() || !novoProjeto.prazo.trim()) {
             alert('Por favor, preencha o nome do projeto e o prazo final.');
             return;
         }
+        try {
+            if (Editando) {
+                const resposta = await fetch(`http://localhost:3000/api/projects/${Editando.id}`, {
+                    method: 'PUT',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(novoProjeto)
+                });
+                if (!resposta.ok) throw new Error('Erro ao atualizar projeto');
 
-        if (Editando) {
-            setProjects(projects.map((p) => p.id === Editando.id ? { ...p, ...novoProjeto } : p));
-            alert('Projeto atualizado com sucesso!');
-            setEditando(null);
-        } else {
-            const projetoCriado = {
-                id: Date.now(),
-                name: novoProjeto.name,
-                status: novoProjeto.status,
-                prazo: novoProjeto.prazo,
-                descricao: novoProjeto.descricao || "Sem descrição informada."
-            };
+                const projetoAtualizado = await resposta.json();
+                setProjects(projects.map((p) => p.id === Editando.id ? projetoAtualizado : p));
+                alert('Projeto atualizado com sucesso!');
+                setEditando(null);
+            } else {
+                const resposta = await fetch('http://localhost:3000/api/projects', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(novoProjeto)
+                });
+                if (!resposta.ok) throw new Error('Erro ao criar projeto');
+
+                const projetoCriado = await resposta.json()
                 setProjects([...projects, projetoCriado]);
                 alert('Projeto cadastrado com sucesso!');
-        }
-        setCadastro(false);
+            }
+            setCadastro(false);
 
-        setNovoProjeto({
-            name: "",
-            status: "Planejamento",
-            prazo: "",
-            descricao: ""
-        });
+            setNovoProjeto({
+                name: "",
+                status: "Planejamento",
+                prazo: "",
+                descricao: ""
+            }); 
+        } catch (error) {
+            console.error('Erro ao salvar projeto:', error);
+            alert('Ocorreu um erro ao salvar o projeto. Por favor, tente novamente.');
+        }
     };
 
-    const excluirProjeto = (id) => {
+    const excluirProjeto = async (id) => {
+        if (window.confirm('Tem certeza que deseja excluir este projeto?')) 
+            try {
+            const resposta = await fetch(`http://localhost:3000/api/projects/${id}`, {
+                method: 'DELETE'
+            });
+            if (!resposta.ok) throw new Error('Erro ao excluir projeto');
             setProjects(projects.filter((project) => project.id !== id));
             FecharModal();
             alert('Projeto excluído com sucesso!');
+        } catch (error) {
+            console.error('Erro ao excluir projeto:', error);
+            alert('Ocorreu um erro ao excluir o projeto. Por favor, tente novamente.');
+        }
     };
 
     const prepararEdicao = (project) => {
