@@ -7,33 +7,23 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum Role {
-  MEMBRO
-  DIRETOR
-  PRESIDENTE
-}
-
 model Member {
-
-  id Int @id @default(autoincrement())
-
-  name String
-
-  email String @unique
-
-  rga String @unique
-
-  role Role
-
-  projects Project[]
-
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  rga       String   @unique
+  cargo     String   
+  diretoria String
+  time      String
+  projects  Project[]
 }
 
 model Project {
   id          Int    @id @default(autoincrement())
-  title       String
-  description String
-
-  memberId Int
-  member   Member @relation(fields: [memberId], references: [id])
+  name        String
+  status      String 
+  prazo       String
+  descricao   String
+  memberId    Int
+  member      Member @relation(fields: [memberId], references: [id])
 }
