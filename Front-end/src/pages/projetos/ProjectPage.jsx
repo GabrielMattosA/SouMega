@@ -36,6 +36,39 @@ function ProjectPage() {
     });
     }
 
+    const SalvarProjeto = (e) => {
+        e.preventDefault();
+        if (!novoProjeto.name.trim() || !novoProjeto.prazo.trim()) {
+            alert('Por favor, preencha o nome do projeto e o prazo final.');
+            return;
+        }
+        const projetoCriado = {
+            id: projects.length > 0 ? Math.max(...projects.map(p => p.id)) + 1 : 1,
+            name: novoProjeto.name,
+            status: novoProjeto.status,
+            prazo: novoProjeto.prazo,
+            descricao: novoProjeto.descricao || "Sem descrição informada."
+        };
+
+        setProjects([...projects, projetoCriado]);
+        setCadastro(false);
+
+        setNovoProjeto({
+            name: "",
+            status: "Planejamento",
+            prazo: "",
+            descricao: ""
+        });
+
+        alert('Projeto cadastrado com sucesso!');
+    };
+
+    const excluirProjeto = (id) => {
+            setProjects(projects.filter((project) => project.id !== id));
+            FecharModal();
+            alert('Projeto excluído com sucesso!');
+    };
+
   return (
     <div className="p-6 max-w-6xl mx-auto font-sans text-gray-800">
         <div className ="flex justify-between items-center mb-6">
@@ -110,10 +143,10 @@ function ProjectPage() {
                         </div>
                             <div className="flex justify-end gap-3 pt-4 border-t border-gray-100 mt-6">
                                 <button 
-                                onClick={FecharModal}
-                                className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition font-medium text-sm"
-                                >
-                                    Fechar
+                                type="button"                                onClick={() => excluirProjeto(selectedProject.id)}
+                                className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-bold text-sm transition-colors shadow-sm"
+                            >
+                                Excluir Projeto
                                 </button>
                             </div>
                         </div>
@@ -122,7 +155,7 @@ function ProjectPage() {
             )}
         {Cadastro && (
             <div className="fixed inset-0 z-50 bg-black/50  flex items-center justify-center p-4">
-                <form className=" p-4 bg-white rounded-xl shadow-xl border border-gray-100 max-w-md w-full overflow-hidden animate-in fade-in duration-150">
+                <form onSubmit={SalvarProjeto} className=" p-4 bg-white rounded-xl shadow-xl border border-gray-100 max-w-md w-full overflow-hidden animate-in fade-in duration-150">
                     <div className="p-6 border-b border-gray-100 flex justify-between items-center">
                         <h2 className="text-xl font-bold text-gray-900">Novo Projeto</h2>
                         <button onClick={() => setCadastro(false)} className="p-1 text-red-400 hover:text-red-600 rounded-md">
