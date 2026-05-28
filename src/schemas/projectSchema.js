@@ -16,6 +16,6 @@ export const projectSchema = z.object({
 
   descricao: z.string().optional(),
 
-  memberId: z.number()
+  memberId: z.number().optional()
 
 })
