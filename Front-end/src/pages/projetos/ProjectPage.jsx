@@ -271,9 +271,9 @@ function ProjectPage() {
                             <label className="block text-sm font-medium mb-1 text-gray-700">Descrição do Projeto</label>
                             <textarea 
                                 rows="3"
-                                name="descricao"
+                                name="description"
                                 placeholder="Descreva brevemente os objetivos do projeto..." 
-                                value={novoProjeto.descricao}
+                                value={novoProjeto.description}
                                 onChange={atualizaForms}
                                 className="w-full border rounded px-3 py-2 text-sm focus:outline-blue-500 resize-none"
                             />
