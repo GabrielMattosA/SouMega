@@ -1,11 +1,12 @@
     import React from 'react';
-    import { ChevronRightIcon, X } from 'lucide-react';
+    import { ChevronRight, X, Users, Plus } from 'lucide-react';
 
     function MemberPage() {
         
         const [membroSelecionado, setMembroSelecionado] = React.useState(null);
         const [Cadastro, setCadastro] = React.useState(false);
         const [Editando, setEditando] = React.useState(null);
+        const [membrosDaMega, setMembrosDaMega] = React.useState([]);
         const [novoMembro, setNovoMembro] = React.useState({
             name: '',
             rga: '',
@@ -50,6 +51,7 @@
                     alert('Membro cadastrado com sucesso!');
                 }
                 setCadastro(false);
+                setEditando(null);
                 setNovoMembro({ name: '', rga: '', email: '', cargo: '', diretoria: '', time: '' });
             } catch (error) {
                 console.error('Erro ao salvar membro:', error);
@@ -73,8 +75,6 @@
                 alert('Ocorreu um erro ao excluir o membro. Por favor, tente novamente.');
             }
         };
-
-        const [membrosDaMega, setMembrosDaMega] = React.useState([]);
 
         React.useEffect(() => {
             const membrosSalvos = async () => {
@@ -109,63 +109,54 @@
             });
             setCadastro(true); 
         };
+
+        const renderizaCargo = (titulo, filtro) => {
+            const membrosFiltrados = membrosDaMega.filter((pessoa) => pessoa.cargo === filtro);
+            if (membrosFiltrados.length === 0) return null;
+            return (
+                <div className="space-y-3">
+                    <h2 className="text-xl font-bold text-gray-800 border-b border-gray-100 pb-2">{titulo}</h2>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {membrosFiltrados.map((pessoa) => (
+                            <div key={pessoa.id} className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm flex justify-between items-center hover:border-blue-300 transition">
+                                <div>
+                                    <p className="font-semibold text-gray-900">{pessoa.name}</p>
+                                    <p className="text-xs text-gray-500 mt-0.5">{pessoa.diretoria} • {pessoa.time || 'Sem Time'}</p>
+                                </div>
+                                <button 
+                                    onClick={() => setMembroSelecionado(pessoa)}
+                                    className="p-1.5 bg-gray-50 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition"
+                                >
+                                    <ChevronRight className="w-5 h-5" />
+                                </button>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            );
+        };
         return (
             <div className="p-8">
-            <h1 className="text-3xl font-bold mb-8 text-center">Membros da Mega</h1>
+            <h1 className="text-3xl font-bold mb-8 flex gap-3 items-center"> 
+                <Users className="w-8 h-8 text-blue-600" />
+                Membros da Mega
+            </h1>
             
             <div className="flex justify-start mb-4">
                 <button onClick={() => { 
                     setEditando(null);
                     setNovoMembro({ name: '', rga: '', email: '', cargo: '', diretoria: '', time: '' });
                     setCadastro(true)}}
-                    className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded font-bold">
-                Cadastrar Novo Membro
+                    className=" flex items-center gap-2 px-2 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded font-bold">
+                <Plus size={16} /> Cadastrar Novo Membro
                 </button>
             </div>
-            <div className="mb-6">
-                <h2 className="text-xl font-semibold mb-2">Presidente</h2>
-                <ul>
-                {membrosDaMega.filter((pessoa) => pessoa.cargo === 'Presidente').map((pessoa) => (
-                    <li key={pessoa.id} className="flex items-center gap-4 mb-2">
-                    <span>{pessoa.name}</span>
-                    <button onClick={() => setMembroSelecionado(pessoa)}
-                    className="px-2 py-1 bg-gray-200 hover:bg-gray-300 rounded font-bold">
-                        <ChevronRightIcon className="w-4 h-4" />
-                    </button>
-                    </li>
-                ))}
-                </ul>
+            <div className="space-y-8">
+                {renderizaCargo("Presidente", "Presidente")}
+                {renderizaCargo("Diretores(as)", "Diretor(a)")}
+                {renderizaCargo("Membros", "Membro")}
             </div>
 
-            <div className="mb-6">
-                <h2 className="text-xl font-semibold mb-2">Diretores</h2>
-                <ul>
-                {membrosDaMega.filter((pessoa) => pessoa.cargo === 'Diretor(a)').map((pessoa) => (
-                    <li key={pessoa.id} className="flex items-center gap-4 mb-2">
-                    <span>{pessoa.name}</span>
-                    <button onClick={() => setMembroSelecionado(pessoa)}
-                    className="px-2 py-1 bg-gray-200 hover:bg-gray-300 rounded font-bold">
-                        <ChevronRightIcon className="w-4 h-4" />
-                    </button>
-                    </li>
-                ))}
-                </ul>
-            </div>
-
-            <div className="mb-6">
-                <h2 className="text-xl font-semibold mb-2">Membros</h2>
-                <ul>
-                {membrosDaMega.filter((pessoa) => pessoa.cargo === 'Membro').map((pessoa) => (
-                    <li key={pessoa.id} className="flex items-center gap-4 mb-2">
-                    <span>{pessoa.name}</span>
-                    <button onClick={() => setMembroSelecionado(pessoa)}
-                    className="px-2 py-1 bg-gray-200 hover:bg-gray-300 rounded font-bold">
-                        <ChevronRightIcon className="w-4 h-4" />
-                    </button>
-                    </li>
-                ))}
-                </ul>
-            </div>
             {membroSelecionado && (
                 <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
                 <div className="bg-white p-6 rounded shadow-lg w-96">
