@@ -11,7 +11,7 @@ function ProjectPage() {
     React.useEffect(() => {
         const buscaProjects = async () => {
             try {
-                const response = await fetch('http://localhost:3000/api/projects');
+                const response = await fetch('http://localhost:3000/projects');
                 if (!response.ok) {
                     console.error('Erro ao buscar projetos');
                     return;
@@ -59,7 +59,7 @@ function ProjectPage() {
         }
         try {
             if (Editando) {
-                const resposta = await fetch(`http://localhost:3000/api/projects/${Editando.id}`, {
+                const resposta = await fetch(`http://localhost:3000/projects/${Editando.id}`, {
                     method: 'PUT',
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify(novoProjeto)
@@ -71,7 +71,7 @@ function ProjectPage() {
                 alert('Projeto atualizado com sucesso!');
                 setEditando(null);
             } else {
-                const resposta = await fetch('http://localhost:3000/api/projects', {
+                const resposta = await fetch('http://localhost:3000/projects', {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify(novoProjeto)
@@ -99,7 +99,7 @@ function ProjectPage() {
     const excluirProjeto = async (id) => {
         if (window.confirm('Tem certeza que deseja excluir este projeto?')) 
             try {
-            const resposta = await fetch(`http://localhost:3000/api/projects/${id}`, {
+            const resposta = await fetch(`http://localhost:3000/projects/${id}`, {
                 method: 'DELETE'
             });
             if (!resposta.ok) throw new Error('Erro ao excluir projeto');
