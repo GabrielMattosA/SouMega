@@ -1,29 +1,27 @@
-import dotenv from "dotenv"
-import express from "express"
-import cors from "cors"
+import dotenv from "dotenv";
+import express from "express";
+import cors from "cors";
 
-import swaggerUi from "swagger-ui-express"
+import swaggerUi from "swagger-ui-express";
 
-import memberRoutes from "./src/routes/memberRoutes.js"
-import projectRoutes from "./src/routes/projectRoutes.js"
-import swaggerSpec from "./src/swagger.js"
+import memberRoutes from "./src/routes/memberRoutes.js";
+import projectRoutes from "./src/routes/projectRoutes.js";
+import swaggerSpec from "./src/swagger.js";
 
-dotenv.config()
+import authRoutes from "./src/routes/authRoutes.js";
+app.use("/auth", authRoutes);
+dotenv.config();
 
-const app = express()
+const app = express();
 
-app.use(express.json())
-app.use(cors())
+app.use(express.json());
+app.use(cors());
 
-app.use(
-  "/docs",
-  swaggerUi.serve,
-  swaggerUi.setup(swaggerSpec)
-)
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-app.use("/members", memberRoutes)
-app.use("/projects", projectRoutes)
+app.use("/members", memberRoutes);
+app.use("/projects", projectRoutes);
 
 app.listen(process.env.PORT, () => {
-  console.log("Servidor rodando")
-})
+  console.log("Servidor rodando");
+});
