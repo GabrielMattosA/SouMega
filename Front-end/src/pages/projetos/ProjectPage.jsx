@@ -30,7 +30,7 @@ function ProjectPage() {
         name: "",
         status: "Planejamento",
         prazo: "",
-        descricao: ""
+        description: ""
     });
 
     const AbrirDescricao = (project) => {
@@ -88,7 +88,7 @@ function ProjectPage() {
                 name: "",
                 status: "Planejamento",
                 prazo: "",
-                descricao: ""
+                description: ""
             }); 
         } catch (error) {
             console.error('Erro ao salvar projeto:', error);
@@ -120,7 +120,7 @@ function ProjectPage() {
             name: project.name,
             status: project.status,
             prazo: project.prazo,
-            descricao: project.descricao
+            description: project.description
         });
         setCadastro(true);
     }
@@ -136,7 +136,7 @@ function ProjectPage() {
         <button 
             onClick={() => {
                 setEditando(null);
-                setNovoProjeto({ name: "", status: "Planejamento", prazo: "", descricao: "" });
+                setNovoProjeto({ name: "", status: "Planejamento", prazo: "", description: "" });
                 setCadastro(true);
             }}
             className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg flex items-center gap-2 transition shadow-sm text-sm mb-4"
@@ -198,7 +198,7 @@ function ProjectPage() {
 
                         <div>
                             <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Descrição</span>
-                            <p className="text-sm text-gray-600 mt-1 leading-relaxed">{SelectedProject.descricao}</p>
+                            <p className="text-sm text-gray-600 mt-1 leading-relaxed">{SelectedProject.description}</p>
                         </div>
                             <div className="flex justify-end gap-3 pt-4 border-t border-gray-100 mt-6">
                                 <div className="flex gap-2">
