@@ -45,8 +45,8 @@
                         body: JSON.stringify(novoMembro)
                     });
                     if (!resposta.ok) throw new Error('Erro ao cadastrar membro.');
-                    const novoMembro = await resposta.json();
-                    setMembrosDaMega([...membrosDaMega, novoMembro]);
+                    const membroCriado = await resposta.json();
+                    setMembrosDaMega([...membrosDaMega, membroCriado]);
                     alert('Membro cadastrado com sucesso!');
                 }
                 setCadastro(false);
