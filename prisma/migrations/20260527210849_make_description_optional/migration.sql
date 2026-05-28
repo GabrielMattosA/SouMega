@@ -1,14 +1,3 @@
-/*
-  Warnings:
-
-  - You are about to drop the column `descricao` on the `Project` table. All the data in the column will be lost.
-  - You are about to drop the column `name` on the `Project` table. All the data in the column will be lost.
-  - You are about to drop the column `prazo` on the `Project` table. All the data in the column will be lost.
-  - Added the required column `deployLink` to the `Project` table without a default value. This is not possible if the table is not empty.
-  - Added the required column `githubLink` to the `Project` table without a default value. This is not possible if the table is not empty.
-  - Added the required column `title` to the `Project` table without a default value. This is not possible if the table is not empty.
-
-*/
 -- AlterTable
 ALTER TABLE "Member" ALTER COLUMN "cargo" DROP NOT NULL,
 ALTER COLUMN "diretoria" DROP NOT NULL,
