@@ -7,6 +7,28 @@ function ProjectPage() {
     const [Cadastro, setCadastro] = React.useState(false);
     const [SelectedProject, setSelectedProject] = React.useState(null);
     const [Editando, setEditando] = React.useState(null);
+    const [listaMembros, setListaMembros] = React.useState([]);
+    const [nomePesquisado, setNomePesquisado] = React.useState("");
+
+    React.useEffect(() => {
+        const buscaMembros = async () => {
+            try {
+                const resposta = await fetch('http://localhost:3000/members');
+                if (!resposta.ok) return;
+                const dados = await resposta.json();
+                setListaMembros(dados);
+            } catch (error) {
+                console.error('Erro de rede ao buscar membros:', error);
+                setListaMembros([
+                    { id: 1, name: "Antonio Castro", cargo: "Presidente" },
+                    { id: 2, name: "Beatriz Souza", cargo: "Diretor(a)" },
+                    { id: 3, name: "Daniela Lima", cargo: "Membro" },
+                    { id: 4, name: "Carlos Eduardo", cargo: "Membro" }
+                ]);
+            }
+        };
+        buscaMembros();
+     }, []);
 
     React.useEffect(() => {
         const buscaProjects = async () => {
@@ -25,12 +47,36 @@ function ProjectPage() {
         buscaProjects();
     }, []);
     
+    const membrosFiltrados = listaMembros.filter((membro) => {
+        const batePesquisa = membro.name.toLowerCase().includes(nomePesquisado.toLowerCase());
+        
+        const jaSelecionado = novoProjeto.members.includes(membro.id);
+        
+        return batePesquisa && !jaSelecionado;
+    });
 
+    const adicionarMembro = (id) => {
+        setNovoProjeto({
+            ...novoProjeto,
+            members: [...novoProjeto.members, id]
+        });
+        setNomePesquisado("");
+    }
+
+    const removerMembro = (id) => {
+        const listaAtualizada = novoProjeto.members.filter((memberId) => memberId !== id);
+        setNovoProjeto({
+            ...novoProjeto,
+            members: listaAtualizada
+        });
+    };
+    
     const [novoProjeto, setNovoProjeto] = React.useState({
         name: "",
         status: "Planejamento",
         prazo: "",
-        description: ""
+        description: "",
+        members: []
     });
 
     const AbrirDescricao = (project) => {
@@ -88,7 +134,8 @@ function ProjectPage() {
                 name: "",
                 status: "Planejamento",
                 prazo: "",
-                description: ""
+                description: "",
+                members: []
             }); 
         } catch (error) {
             console.error('Erro ao salvar projeto:', error);
@@ -120,7 +167,8 @@ function ProjectPage() {
             name: project.name,
             status: project.status,
             prazo: project.prazo,
-            description: project.description
+            description: project.description,
+            members: project.members
         });
         setCadastro(true);
     }
@@ -136,7 +184,7 @@ function ProjectPage() {
         <button 
             onClick={() => {
                 setEditando(null);
-                setNovoProjeto({ name: "", status: "Planejamento", prazo: "", description: "" });
+                setNovoProjeto({ name: "", status: "Planejamento", prazo: "", description: "", members: []});
                 setCadastro(true);
             }}
             className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg flex items-center gap-2 transition shadow-sm text-sm mb-4"
@@ -271,9 +319,9 @@ function ProjectPage() {
                             <label className="block text-sm font-medium mb-1 text-gray-700">Descrição do Projeto</label>
                             <textarea 
                                 rows="3"
-                                name="descricao"
+                                name="description"
                                 placeholder="Descreva brevemente os objetivos do projeto..." 
-                                value={novoProjeto.descricao}
+                                value={novoProjeto.description}
                                 onChange={atualizaForms}
                                 className="w-full border rounded px-3 py-2 text-sm focus:outline-blue-500 resize-none"
                             />
