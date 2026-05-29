@@ -10,6 +10,14 @@ function ProjectPage() {
     const [listaMembros, setListaMembros] = React.useState([]);
     const [nomePesquisado, setNomePesquisado] = React.useState("");
 
+    const [novoProjeto, setNovoProjeto] = React.useState({
+        name: "",
+        status: "Planejamento",
+        prazo: "",
+        description: "",
+        members: []
+    });
+
     React.useEffect(() => {
         const buscaMembros = async () => {
             try {
@@ -47,6 +55,7 @@ function ProjectPage() {
         buscaProjects();
     }, []);
     
+    
     const membrosFiltrados = listaMembros.filter((membro) => {
         const batePesquisa = membro.name.toLowerCase().includes(nomePesquisado.toLowerCase());
         
@@ -70,14 +79,6 @@ function ProjectPage() {
             members: listaAtualizada
         });
     };
-    
-    const [novoProjeto, setNovoProjeto] = React.useState({
-        name: "",
-        status: "Planejamento",
-        prazo: "",
-        description: "",
-        members: []
-    });
 
     const AbrirDescricao = (project) => {
         setSelectedProject(project);
@@ -130,6 +131,8 @@ function ProjectPage() {
             }
             setCadastro(false);
 
+            setNomePesquisado("")
+
             setNovoProjeto({
                 name: "",
                 status: "Planejamento",
@@ -168,7 +171,7 @@ function ProjectPage() {
             status: project.status,
             prazo: project.prazo,
             description: project.description,
-            members: project.members
+            members: project.members || []
         });
         setCadastro(true);
     }
@@ -314,6 +317,45 @@ function ProjectPage() {
                                 onChange={atualizaForms} 
                                 className="w-full border rounded px-3 py-2 text-sm focus:outline-blue-500" 
                             />
+                        </div>
+                        <div className="flex flex-wrap gap-2 mb-2">
+                            {(novoProjeto.members || []).map((memberId) => {
+                                const dadosMembro = listaMembros.find((m) => m.id === memberId);
+                                if (!dadosMembro) return null;
+                                return (
+                                    <div key={memberId} className="flex items-center gap-1 bg-blue-100 text-blue-800 px-2.5 py-1 rounded-full font-semibold text-xs">
+                                        <span>{dadosMembro.name}</span>
+                                        <button type="button" onClick={() => removerMembro(memberId)} className="hover:text-blue-600 font-bold ml-1 focus:outline-none">
+                                            &times;
+                                        </button>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                        <div className="relative mb-4">
+                            <label className="block text-sm font-medium mb-1 text-gray-700">Adicionar Membros</label>
+                            <input
+                                type="text"
+                                placeholder="Digite o nome do membro"
+                                value={nomePesquisado}
+                                onChange={(e) => setNomePesquisado(e.target.value)}
+                                className="w-full border rounded px-3 py-2 text-sm focus:outline-blue-500"
+                            />
+                            {nomePesquisado.trim() !== "" && membrosFiltrados.length > 0 && (
+                                <div className="absolute z-50 w-full bg-white border border-gray-200 rounded-lg mt-1 shadow-lg max-h-48 overflow-y-auto">
+                                    {membrosFiltrados.map((membro) => (
+                                        <button
+                                            key={membro.id}
+                                            type="button"
+                                            onClick={() => adicionarMembro(membro.id)}
+                                            className="w-full text-left px-4 py-2 text-sm hover:bg-blue-50 transition-colors flex justify-between items-center"
+                                        >
+                                            <span className="font-medium text-gray-900">{membro.name}</span>
+                                            <span className="text-xs text-gray-500">{membro.cargo}</span>
+                                        </button>
+                                    ))}
+                                </div>
+                            )}
                         </div>
                         <div>
                             <label className="block text-sm font-medium mb-1 text-gray-700">Descrição do Projeto</label>
