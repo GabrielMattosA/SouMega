@@ -1,17 +1,18 @@
-import express from "express"
+import express from "express";
+import { auth } from "../middlewares/auth.js";
 
 import {
   createMember,
   getMembers,
   deleteMember,
-  updateMember
-} from "../controllers/memberController.js"
+  updateMember,
+} from "../controllers/memberController.js";
 
-import { validate } from "../middlewares/validate.js"
+import { validate } from "../middlewares/validate.js";
 
-import { memberSchema } from "../schemas/memberSchema.js"
+import { memberSchema } from "../schemas/memberSchema.js";
 
-const router = express.Router()
+const router = express.Router();
 
 /**
  * @swagger
@@ -22,7 +23,7 @@ const router = express.Router()
  *       200:
  *         description: Lista de membros
  */
-router.get("/", getMembers)
+router.get("/", auth, getMembers);
 
 /**
  * @swagger
@@ -45,13 +46,9 @@ router.get("/", getMembers)
  *         description: Membro criado
  */
 
-router.post(
-  "/",
-  validate(memberSchema),
-  createMember
-)
+router.post("/", auth, validate(memberSchema), createMember);
 
-router.delete("/:id", deleteMember)
-router.put("/:id", updateMember)
+router.delete("/:id", auth, deleteMember);
+router.put("/:id", auth, updateMember);
 
-export default router
+export default router;
