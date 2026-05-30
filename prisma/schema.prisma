@@ -25,6 +25,5 @@ model Project {
   prazo       String
   description String?
 
-  memberId Int?
-  member   Member? @relation(fields: [memberId], references: [id])
+  members Member[]
 }

@@ -29,7 +29,7 @@ export async function getProjects(req, res) {
 
     const projects = await prisma.project.findMany({
       include: {
-        member: true
+        members: true
       }
     })
 
