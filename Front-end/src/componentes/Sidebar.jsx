@@ -1,9 +1,15 @@
-
-import { Link , useLocation } from "react-router-dom";
-import { LayoutDashboard, Users, FolderKanban } from "lucide-react";
+import { Link , useLocation ,useNavigate } from "react-router-dom";
+import { LayoutDashboard, Users, FolderKanban , LogOut } from "lucide-react";
 
 function Sidebar() {
   const location = useLocation();
+  const navigate = useNavigate();
+
+  const lidarLogout = async (e) => {
+    e.preventDefault() 
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
 
   const linkStyle = (path) => `
         flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-all duration-200
@@ -13,7 +19,7 @@ function Sidebar() {
         `;
 
     return (
-            <aside className="w-64 bg-white h-screen border-r border-gray-200 p-4 flex flex-col gap-2 fixed left-0 top-0 z-40">  
+            <aside className="w-64 bg-white h-screen border-r border-gray-200 p-4 flex flex-col gap-2 shrink-0 sticky left-0 top-0 z-40">  
                 <div className="flex items-center gap-2 px-4 py-3 mb-6 border-b border-gray-100">
                     <div className="w-8 h-8 bg-purple-600 rounded-lg flex items-center justify-center text-white font-bold text-lg">
                         M
@@ -35,6 +41,12 @@ function Sidebar() {
                     Projetos
                     </Link>
                 </nav>
+                <div className="pt-4 border-t border-gray-100 mt-auto">
+                    <button onClick={lidarLogout} className="w-full flex items-center gap-3 px-4 py-3 text-red-500 hover:bg-red-50 hover:text-red-700 rounded-lg font-medium transition-all duration-200">
+                        <LogOut className="w-5 h-5" />
+                        Sair do Sistema
+                     </button>
+                </div>
             </aside>
 
 
