@@ -1,25 +1,14 @@
 export function validate(schema) {
-
   return (req, res, next) => {
+    const result = schema.safeParse(req.body);
 
-    try {
-
-      schema.parse(req.body)
-
-      next()
-
-    } catch(error) {
-
-      const errors = error.issues?.map(
-        err => err.message
-      )
-
-      res.status(400).json({
-        errors
-      })
-
+    if (!result.success) {
+      return res.status(400).json({
+        errors: result.error.issues.map((issue) => issue.message)
+      });
     }
 
-  }
-
+    req.body = result.data;
+    next();
+  };
 }

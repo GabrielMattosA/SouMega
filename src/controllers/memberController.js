@@ -2,44 +2,34 @@ import prisma from "../prisma/client.js"
 import { memberSchema } from "../schemas/memberSchema.js"
 
 export async function createMember(req, res) {
-
   try {
-
     const member = await prisma.member.create({
       data: req.body
-    })
+    });
 
-    res.status(201).json(member)
+    res.status(201).json(member);
 
-  } catch(error) {
-
-    const errors = error.issues?.map(err => err.message)
-
-    res.status(400).json({
-      errors
-    })
-
-  }
-
-}
-export async function getMembers(req, res) {
-
-  try {
-
-    const members = await prisma.member.findMany({
-      include: {
-        projects: true
-      }
-    })
-
-    res.json(members)
-
-  } catch(error) {
+  } catch (error) {
+    if (error.code === "P2002") {
+      return res.status(400).json({
+        error: `JÃ¡ existe um membro com esse ${error.meta.target[0]}.`
+      });
+    }
 
     res.status(500).json({
       error: "Erro interno do servidor"
-    })
+    });
+  }
+}
 
+export async function getMembers(req, res) {
+  try {
+    const members = await prisma.member.findMany()
+
+    res.json(members)
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ error: "Erro interno do servidor" })
   }
 }
 

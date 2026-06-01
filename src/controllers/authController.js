@@ -4,26 +4,21 @@ import jwt from "jsonwebtoken";
 
 //Função de login utilizando o RGA
 export async function login(req, res) {
-  const { rga } = req.body;
 
-  try {
-    //Procura o úsuario com o rga informado no banco de dados
-    const user = await prisma.member.findUnique({
-      where: { rga },
-    });
+  const user = await prisma.member.findUnique({
+    where: { rga: req.body.rga },
+  });
 
-    //Se não encontrar o úsuario, bloqueia.
-    if (!user) {
-      return res.status(404).json({ error: "RGA não encontrado." });
-    }
 
-    //Cria um token
-    const token = jwt.sign({ id: user.id }, process.env.JWT_TOKEN, {
-      expiresIn: "2h",
-    });
-
-    res.json({ token });
-  } catch (error) {
-    res.status(500).json({ error: "Erro no login" });
+  if (!user) {
+    return res.status(404).json({ error: "RGA não encontrado." });
   }
+
+  const token = jwt.sign(
+  { id: user.id },
+  process.env.JWT_SECRET,
+  { expiresIn: "2h" }
+  );
+  
+  res.json({ token });
 }
