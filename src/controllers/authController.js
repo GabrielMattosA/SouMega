@@ -18,9 +18,13 @@ export async function login(req, res) {
     }
 
     //Cria um token
-    const token = jwt.sign({ id: user.id }, process.env.JWT_TOKEN, {
-      expiresIn: "2h",
-    });
+    const token = jwt.sign(
+      { id: user.id, cargo: user.cargo },
+      process.env.JWT_TOKEN,
+      {
+        expiresIn: "2h",
+      },
+    );
 
     res.json({ token });
   } catch (error) {
