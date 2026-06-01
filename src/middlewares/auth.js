@@ -15,10 +15,10 @@ export function auth(req, res, next) {
 
   try {
     //Verifica se o token é válido
-    const verified = jwt.verify(token, process.env.JWT_TOKEN);
+    const decoded = jwt.verify(token, process.env.JWT_TOKEN);
 
     //Salva os dados na requisição
-    req.user = verified;
+    req.user = decoded;
 
     //Libera o acesso
     next();
