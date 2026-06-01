@@ -15,5 +15,5 @@ export const projectSchema = z.object({
 
   description: z.string().optional(),
 
-  memberId: z.number().optional()
+  memberId: z.coerce.number().nullable().optional()
 })

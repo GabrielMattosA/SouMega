@@ -24,25 +24,14 @@ export async function createProject(req, res) {
 }
 
 export async function getProjects(req, res) {
-
   try {
+    const projects = await prisma.project.findMany();
 
-    const projects = await prisma.project.findMany({
-      include: {
-        members: true
-      }
-    })
-
-    res.json(projects)
-
+    res.json(projects);
   } catch (error) {
-
-    res.status(500).json({
-      error: "Erro ao buscar projetos"
-    })
-
+    console.log("ERRO AO BUSCAR PROJETOS:", error);
+    res.status(500).json({ error: error.message });
   }
-
 }
 
 export async function updateProject(req, res) {
