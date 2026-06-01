@@ -31,7 +31,9 @@
                     if (Editando) {
                         const resposta = await fetch(`http://localhost:3000/members/${Editando.id}`, {
                             method: 'PUT',
-                            headers: { 'Content-Type': 'application/json' },
+                            headers: { 'Content-Type': 'application/json',
+                            Authorization: `Bearer ${localStorage.getItem("token")}`,
+                            },
                             body: JSON.stringify(novoMembro)
                         });
                     if (!resposta.ok) throw new Error('Erro ao editar membro.');
@@ -42,7 +44,8 @@
                     } else {
                     const resposta = await fetch('http://localhost:3000/members', {
                         method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
+                        headers: { 'Content-Type': 'application/json',
+                        Authorization: `Bearer ${localStorage.getItem("token")}` },
                         body: JSON.stringify(novoMembro)
                     });
                     if (!resposta.ok) throw new Error('Erro ao cadastrar membro.');
@@ -62,7 +65,10 @@
         const excluirMembro = async (id) => {
             try {
                 const resposta = await fetch(`http://localhost:3000/members/${id}`, {
-                    method: 'DELETE'
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem("token")}`,
+                    },
                 });
                 if (!resposta.ok) {
                     throw new Error('Erro ao excluir membro:');
@@ -79,7 +85,9 @@
         React.useEffect(() => {
             const membrosSalvos = async () => {
                 try{
-                const resposta = await fetch('http://localhost:3000/members');
+                    const resposta = await fetch('http://localhost:3000/members', {
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem("token")}` }
+});
                 if (!resposta.ok) {
                     console.error('Erro ao buscar membros:');
                     return;
