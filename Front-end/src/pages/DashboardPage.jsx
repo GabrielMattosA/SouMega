@@ -1,5 +1,5 @@
 import React from "react";
-import {Users, FolderKanban, CheckCircle2, UserCheck} from  "lucide-react";
+import {Users, FolderKanban, CheckCircle2, UserCheck} from "lucide-react";
 
 function DashboardPage() {
     const [membrosCount, setMembrosCount] = React.useState(0);
@@ -9,26 +9,29 @@ function DashboardPage() {
     React.useEffect(() => {
         const carregaMetricas = async () => {
             try {
-                let dadosMembros = [];
-                let dadosProjetos = [];
+                const token = localStorage.getItem("token");
+                const headers = {
+                    Authorization: `Bearer ${token}`
+                };
 
-                const respostaMembros = await fetch('http://localhost:3000/membros/count');
+                const respostaMembros = await fetch("http://localhost:3000/members/count", { headers });
                 if (respostaMembros.ok) {
-                    dadosMembros = await respostaMembros.json();
-                    setMembrosCount(dadosMembros.length);
+                    const dadosMembros = await respostaMembros.json();
+                    setMembrosCount(dadosMembros.count);
                 }
-                const respostaProjetos = await fetch('http://localhost:3000/projetos/count');
+
+                const respostaProjetos = await fetch("http://localhost:3000/projects/count", { headers });
                 if (respostaProjetos.ok) {
-                    dadosProjetos = await respostaProjetos.json();
-                    setProjetosCount(dadosProjetos.length);
+                    const dadosProjetos = await respostaProjetos.json();
+                    setProjetosCount(dadosProjetos.count);
                 }
-                const idOcupados = new Set(dadosProjetos.map(projeto => projeto.membros.id));
+                const respostaOciosos = await fetch("http://localhost:3000/members/available", { headers });
+                const data = await respostaOciosos.json();
 
-                const ociosos = dadosMembros.filter(membro => !idOcupados.has(membro.id));
+                setMembrosDisponiveis(data.count);
 
-                setMembrosDisponiveis(ociosos.length);
             } catch (e) {
-                console.error('Erro ao carregar métricas:', e);
+                console.error("Erro ao carregar métricas:", e);
             }
         };
 
@@ -41,7 +44,7 @@ function DashboardPage() {
                 <h1 className="text-3xl font-bold text-gray-950 tracking-tight">Dashboard</h1>
                 <p className="text-gray-500 mt-1">Bem-vindo ao painel de controle do SouMega.</p>
             </div>
-            <div className = "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm flex items-center gap-4">
                     <div className="p-3 bg-blue-50 text-blue-600 rounded-lg">
                         <Users className="w-6 h-6" />
@@ -81,6 +84,6 @@ function DashboardPage() {
             </div>
         </div>
     );
-}       
+}
 
 export default DashboardPage;

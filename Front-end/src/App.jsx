@@ -4,6 +4,7 @@ import MemberPage from './pages/membros/MemberPage';
 import ProjectPage from './pages/projetos/ProjectPage';
 import Sidebar from './componentes/Sidebar';
 import DashboardPage from './pages/DashboardPage';
+import PropTypes from 'prop-types';
 
 function RotaProtegida({children}) {
   const token = localStorage.getItem("token");
@@ -14,6 +15,10 @@ function RotaProtegida({children}) {
 
   return children;
 }
+
+RotaProtegida.propTypes = {
+  children: PropTypes.node.isRequired,
+};
 
 function App() {
   return (

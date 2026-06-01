@@ -21,7 +21,8 @@ function ProjectPage() {
     React.useEffect(() => {
         const buscaMembros = async () => {
             try {
-                const resposta = await fetch('http://localhost:3000/members');
+                    const resposta = await fetch('http://localhost:3000/members', {headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+                        });
                 if (!resposta.ok) return;
                 const dados = await resposta.json();
                 setListaMembros(dados);
@@ -41,12 +42,14 @@ function ProjectPage() {
     React.useEffect(() => {
         const buscaProjects = async () => {
             try {
-                const response = await fetch('http://localhost:3000/projects');
-                if (!response.ok) {
+                const respostaBusca = await fetch('http://localhost:3000/projects', {
+                headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+                    });
+                if (!respostaBusca.ok) {
                     console.error('Erro ao buscar projetos');
                     return;
                 }
-                const dados = await response.json();
+                const dados = await respostaBusca.json();
                 setProjects(dados);
             } catch (error) {
                 console.error('Erro de rede ao buscar projetos:', error);
@@ -109,6 +112,7 @@ function ProjectPage() {
                 const resposta = await fetch(`http://localhost:3000/projects/${Editando.id}`, {
                     method: 'PUT',
                     headers: {'Content-Type': 'application/json'},
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
                     body: JSON.stringify(novoProjeto)
                 });
                 if (!resposta.ok) throw new Error('Erro ao atualizar projeto');
@@ -150,7 +154,8 @@ function ProjectPage() {
         if (window.confirm('Tem certeza que deseja excluir este projeto?')) 
             try {
             const resposta = await fetch(`http://localhost:3000/projects/${id}`, {
-                method: 'DELETE'
+                method: 'DELETE',
+                headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
             });
             if (!resposta.ok) throw new Error('Erro ao excluir projeto');
             setProjects(projects.filter((project) => project.id !== id));

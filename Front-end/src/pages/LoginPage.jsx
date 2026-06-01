@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 
-function LoginPage ({aoLogar}) {
+function LoginPage () {
     const [rga, setRga] = React.useState("")
     const [erro, setErro] = React.useState("")
     const navigate = useNavigate();
@@ -15,7 +15,7 @@ function LoginPage ({aoLogar}) {
             return
         }
         try {
-            const resposta = await fetch("http://localhost:3000/login", {
+            const resposta = await fetch("http://localhost:3000/auth/login", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -47,7 +47,9 @@ function LoginPage ({aoLogar}) {
                 </div>
 
                 {erro && (
-                    <div className="mb-4 bg-red-50 border border-red-200 text-red-600 px-3 py-2 rounded-lg text-sm font-medium"></div>
+                    <div className="mb-4 bg-red-50 border border-red-200 text-red-600 px-3 py-2 rounded-lg text-sm font-medium">
+                        {erro}
+                    </div>
                 )}
                 <form onSubmit={lidarLogin} className ="space-y-4">
                     <div>
