@@ -25,7 +25,9 @@ function DashboardPage() {
                     const dadosProjetos = await respostaProjetos.json();
                     setProjetosCount(dadosProjetos.count);
                 }
-                const respostaOciosos = await fetch("http://localhost:3000/members/available", { headers });
+                const respostaOciosos = await fetch("http://localhost:3000/members/available/count", { headers:{
+                    Authorization: `Bearer ${token}`
+                } });
                 const data = await respostaOciosos.json();
 
                 setMembrosDisponiveis(data.count);

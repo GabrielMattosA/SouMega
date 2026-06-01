@@ -65,7 +65,9 @@
             try {
                 const resposta = await fetch(`http://localhost:3000/members/${id}`, {
                     method: 'DELETE',
-                    'Authorization': `Bearer ${localStorage.getItem("token")}`,
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem("token")}`,
+                    },
                 });
                 if (!resposta.ok) {
                     throw new Error('Erro ao excluir membro:');
