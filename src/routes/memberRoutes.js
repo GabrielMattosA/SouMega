@@ -57,4 +57,20 @@ router.get("/count", auth, async (req, res) => {
   res.json({ count });
 });
 
+router.get("/available/count", auth, async (req, res) => {
+  try {
+    const count = await prisma.member.count({
+      where: {
+        projects: {
+          none: {}
+        }
+      }
+    });
+
+    res.json({ count });
+  } catch (error) {
+    res.status(500).json({ error: "Erro ao buscar membros disponíveis" });
+  }
+});
+
 export default router;
