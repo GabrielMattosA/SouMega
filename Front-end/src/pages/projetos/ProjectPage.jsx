@@ -111,8 +111,9 @@ function ProjectPage() {
             if (Editando) {
                 const resposta = await fetch(`http://localhost:3000/projects/${Editando.id}`, {
                     method: 'PUT',
-                    headers: {'Content-Type': 'application/json'},
+                    headers: {'Content-Type': 'application/json',
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
+                    },
                     body: JSON.stringify(novoProjeto)
                 });
                 if (!resposta.ok) throw new Error('Erro ao atualizar projeto');

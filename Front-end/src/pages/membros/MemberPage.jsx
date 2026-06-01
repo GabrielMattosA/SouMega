@@ -31,8 +31,9 @@
                     if (Editando) {
                         const resposta = await fetch(`http://localhost:3000/members/${Editando.id}`, {
                             method: 'PUT',
-                            headers: { 'Content-Type': 'application/json' },
-                            'Authorization': `Bearer ${localStorage.getItem("token")}`,
+                            headers: { 'Content-Type': 'application/json',
+                            Authorization: `Bearer ${localStorage.getItem("token")}`,
+                            },
                             body: JSON.stringify(novoMembro)
                         });
                     if (!resposta.ok) throw new Error('Erro ao editar membro.');
@@ -43,8 +44,8 @@
                     } else {
                     const resposta = await fetch('http://localhost:3000/members', {
                         method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        'Authorization': `Bearer ${localStorage.getItem("token")}`,
+                        headers: { 'Content-Type': 'application/json',
+                        Authorization: `Bearer ${localStorage.getItem("token")}` },
                         body: JSON.stringify(novoMembro)
                     });
                     if (!resposta.ok) throw new Error('Erro ao cadastrar membro.');
