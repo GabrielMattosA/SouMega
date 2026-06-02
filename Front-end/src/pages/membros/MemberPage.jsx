@@ -29,7 +29,7 @@
                 }
                 try {
                     if (Editando) {
-                        const resposta = await fetch(`http://localhost:3000/members/${Editando.id}`, {
+                        const resposta = await fetch(`${import.meta.env.VITE_API_URL}/members/${Editando.id}`, {
                             method: 'PUT',
                             headers: { 'Content-Type': 'application/json',
                             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -42,7 +42,7 @@
                         alert('Membro editado com sucesso!');
                         setEditando(null);
                     } else {
-                    const resposta = await fetch('http://localhost:3000/members', {
+                    const resposta = await fetch(`${import.meta.env.VITE_API_URL}/members`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json',
                         Authorization: `Bearer ${localStorage.getItem("token")}` },
@@ -64,7 +64,7 @@
 
         const excluirMembro = async (id) => {
             try {
-                const resposta = await fetch(`http://localhost:3000/members/${id}`, {
+                const resposta = await fetch(`${import.meta.env.VITE_API_URL}/members/${id}`, {
                     method: 'DELETE',
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem("token")}`,
@@ -85,7 +85,7 @@
         React.useEffect(() => {
             const membrosSalvos = async () => {
                 try{
-                    const resposta = await fetch('http://localhost:3000/members', {
+                    const resposta = await fetch(`${import.meta.env.VITE_API_URL}/members`, {
                     headers: { 'Authorization': `Bearer ${localStorage.getItem("token")}` }
 });
                 if (!resposta.ok) {
