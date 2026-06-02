@@ -15,7 +15,7 @@ function LoginPage () {
             return
         }
         try {
-            const resposta = await fetch("http://localhost:3000/auth/login", {
+            const resposta = await fetch(`${import.meta.env.VITE_API_URL}/auth/login`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
