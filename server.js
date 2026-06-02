@@ -56,6 +56,10 @@ app.get("/teste", (req, res) => {
   res.send("OK");
 });
 
+app.get("/", (req, res) => {
+  res.json({ message: "API SouMega rodando" });
+});
+
 app.listen(process.env.PORT, () => {
   console.log("Servidor rodando");
 });
