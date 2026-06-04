@@ -3,14 +3,13 @@ import { memberSchema } from "../schemas/memberSchema.js";
 import { gerarSenha } from "./passwordgenerate.js";
 
 export async function createMember(req, res) {
-
   try {
-    const senha = gerarSenha(req.body.name, req.body.rga)
+    const senha = gerarSenha(req.body.name, req.body.rga);
     const member = await prisma.member.create({
       data: {
-        req.body,
+        ...req.body,
         password: senha,
-      } 
+      },
     });
 
     res.status(201).json(member);
@@ -25,10 +24,8 @@ export async function createMember(req, res) {
       error: "Erro interno do servidor",
     });
   }
-
 }
 export async function getMembers(req, res) {
-
   try {
     const members = await prisma.member.findMany();
 
