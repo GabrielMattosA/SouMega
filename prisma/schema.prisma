@@ -14,8 +14,9 @@ model Member {
   rga String @unique
   cargo String?
   diretoria String?
-  time String?
-  projects Project[]
+  time      String?
+  projects  Project[]
+  password  String
 }
 
 model Project {
