@@ -7,4 +7,8 @@ const router = express.Router();
 //Rota para o login
 router.post("/login", login);
 
+router.get("/teste-auth", (req, res) => {
+  res.send("AUTH OK");
+});
+
 export default router;

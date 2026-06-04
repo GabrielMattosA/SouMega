@@ -1,5 +1,6 @@
 import express from "express";
 import { auth } from "../middlewares/auth.js";
+import prisma from "../prisma/client.js";
 
 import {
   createMember,
@@ -50,5 +51,26 @@ router.post("/", auth, validate(memberSchema), createMember);
 
 router.delete("/:id", auth, deleteMember);
 router.put("/:id", auth, updateMember);
+
+router.get("/count", auth, async (req, res) => {
+  const count = await prisma.member.count();
+  res.json({ count });
+});
+
+router.get("/available/count", auth, async (req, res) => {
+  try {
+    const count = await prisma.member.count({
+      where: {
+        projects: {
+          none: {}
+        }
+      }
+    });
+
+    res.json({ count });
+  } catch (error) {
+    res.status(500).json({ error: "Erro ao buscar membros disponíveis" });
+  }
+});
 
 export default router;

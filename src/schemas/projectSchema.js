@@ -1,7 +1,6 @@
 import { z } from "zod"
 
 export const projectSchema = z.object({
-
   name: z
     .string()
     .min(1, "O nome é obrigatório"),
@@ -14,8 +13,7 @@ export const projectSchema = z.object({
     .string()
     .min(1, "O prazo é obrigatório"),
 
-  descricao: z.string().optional(),
+  description: z.string().optional(),
 
-  memberId: z.number().optional()
-
+  memberId: z.coerce.number().nullable().optional()
 })

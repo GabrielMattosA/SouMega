@@ -23,3 +23,8 @@ dist-ssr
 *.sln
 *.sw?
 .vite/
+
+# Variaveis de Ambiente
+.env
+.env.local
+.env.*
