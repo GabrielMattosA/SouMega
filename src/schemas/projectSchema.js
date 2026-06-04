@@ -1,4 +1,4 @@
-import { z } from "zod"
+import { z } from "zod";
 
 export const projectSchema = z.object({
   name: z
@@ -15,5 +15,5 @@ export const projectSchema = z.object({
 
   description: z.string().optional(),
 
-  memberId: z.coerce.number().nullable().optional()
-})
+  members: z.array(z.coerce.number()).optional()
+});

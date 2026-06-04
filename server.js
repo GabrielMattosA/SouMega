@@ -20,16 +20,6 @@ app.use("/auth", authRoutes);
 app.use("/members", memberRoutes);
 app.use("/projects", projectRoutes);
 
-app.get("/members/count", async (req, res) => {
-  const count = await prisma.member.count();
-  res.json({ count });
-});
-
-app.get("/projects/count", async (req, res) => {
-  const count = await prisma.project.count();
-  res.json({ count });
-});
-
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.get("/criar-membro-teste", async (req, res) => {
@@ -54,6 +44,10 @@ app.get("/teste-members", async (req, res) => {
 
 app.get("/teste", (req, res) => {
   res.send("OK");
+});
+
+app.get("/", (req, res) => {
+  res.json({ message: "API SouMega rodando" });
 });
 
 app.listen(process.env.PORT, () => {
