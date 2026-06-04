@@ -1,1 +1,10 @@
 @import "tailwindcss";
+
+@theme {
+  --color-mega-roxo: #5B21B6;
+  --color-mega-roxo-escuro: #4C1D95;
+  --color-mega-amarelo: #FACC15;
+  --color-mega-amarelo-hover: #D97706;
+  --color-mega-fundo: #0F172A;
+  --color-mega-card: #1E293B;
+}

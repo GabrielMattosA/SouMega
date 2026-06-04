@@ -183,10 +183,11 @@ function ProjectPage() {
     }
 
   return (
-    <div className="p-6 max-w-6xl mx-auto font-sans text-gray-800">
-        <div className ="flex justify-between items-center mb-6">
-            <h1 className="text-2xl font-bold flex items-center gap-2 text-gray-900">
-                <Folder className="w-6 h-6" />
+    <div className="min-h-screen w-full bg-mega-fundo p-6 font-sans text-white">
+        <div className ="max-w-6xl mx-auto"></div>
+        <div className ="flex justify-between items-center mb-8">
+            <h1 className="text-3xl font-bold flex items-center gap-3 text-white tracking-tight">
+                <Folder className="w-8 h-8 text-mega-amarelo" />
                 Projetos
             </h1>
         </div>
@@ -196,31 +197,31 @@ function ProjectPage() {
                 setNovoProjeto({ name: "", status: "Planejamento", prazo: "", description: "", members: []});
                 setCadastro(true);
             }}
-            className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg flex items-center gap-2 transition shadow-sm text-sm mb-4"
+            className="bg-mega-roxo hover:bg-mega-roxo-escuro text-white font-bold py-2.5 px-5 rounded-lg flex items-center gap-2 transition-colors shadow-md text-sm mb-6" 
             >
                 <Plus size={16} /> Novo Projeto
         </button>
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+        <div className="bg-mega-card rounded-xl shadow-lg border border-gray-800 overflow-hidden">
             <table className="w-full text-left border-collapse">
-                <thead className="bg-gray-100">
-                    <tr className="bg-gray-50 border-b border-gray-200 text-gray-600 text-sm font-semibold">
-                        <th className="p-4">Nome do Projeto</th>
-                        <th className="p-4">Status</th>
-                        <th className="p-4">Prazo Final</th>
+                <thead className="bg-gray-800/50">
+                    <tr className="border-b border-gray-800 text-gray-400 text-sm font-semibold tracking-wide">
+                        <th className="p-5">Nome do Projeto</th>
+                        <th className="p-5">Status</th>
+                        <th className="p-5">Prazo Final</th>
                     </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-100 text-sm">
+                <tbody className="divide-y divide-gray-800 text-sm">
                     {projects.map((project) => (
                         <tr key={project.id} 
                             onClick={() => AbrirDescricao(project)}
-                        className="hover:bg-gray-50 transition cursor-pointer group">
-                            <td className="p-4 font-medium text-gray-900">{project.name}</td>
-                            <td className="p-4">
-                                <span className="px-2.5 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
+                        className="hover:bg-gray-800/50 transition cursor-pointer group">
+                            <td className="p-5 font-medium text-white">{project.name}</td>
+                            <td className="p-5">
+                                <span className="px-3 py-1.5 text-xs font-bold rounded-lg bg-mega-roxo/20 text-mega-roxo border border-mega-roxo/30">
                                     {project.status}
                                 </span>
                             </td>               
-                            <td className="p-4 text-gray-500 flex items-center gap-2">
+                            <td className="p-5 text-gray-400 flex items-center gap-2">
                                 <Calendar size={14} /> {project.prazo}
                             </td>
                         </tr>
@@ -229,40 +230,40 @@ function ProjectPage() {
             </table>    
         </div>
             {AbrirModal && SelectedProject && (
-                <div className="fixed inset-0 bg-gray-500/30 bg-opacity-40 backdrop-blur-sm flex justify-center items-center z-50 p-4">
-                    <div className="bg-white rounded-xl shadow-xl border border-gray-100 max-w-md w-full overflow-hidden animate-in fade-in duration-150">
-                        <div className="p-6 border-b border-gray-100 flex justify-between items-center">
-                            <h2 className="text-xl font-bold text-gray-900">{SelectedProject.name}</h2>
-                            <button type="button" onClick={FecharModal} className="p-1 text-red-400 hover:text-red-600 rounded-md">
+                <div className="fixed inset-0 bg-gray-70  backdrop-blur-sm flex justify-center items-center z-50 p-4">
+                    <div className="bg-mega-card rounded-xl shadow-2xl border border-gray-800 max-w-md w-full overflow-hidden animate-in fade-in duration-150">
+                        <div className="p-6 border-b border-gray-800 flex justify-between items-center">
+                            <h2 className="text-xl font-bold text-white">{SelectedProject.name}</h2>
+                            <button type="button" onClick={FecharModal} className="p-1 text-gray-400 hover:text-red-400 transition-colors rounded-md focus:outline-none">
                             <X size={20} />
                             </button>
                         </div>
-                        <div className="p-6 space-y-4">
+                        <div className="p-6 space-y-5">
                         <div>
-                            <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Status</span>
-                            <div className="mt-1">
-                            <span className="px-2.5 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
+                            <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">Status</span>
+                            <div className="mt-2">
+                            <span className="px-3 py-1.5 text-xs font-bold rounded-lg bg-mega-roxo/20 text-mega-roxo border border-mega-roxo/30">
                                 {SelectedProject.status}
                             </span>
                             </div>
                         </div>
                         <div>
-                            <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Prazo Final</span>
-                            <p className="text-sm text-gray-700 flex items-center gap-2 mt-1">
+                            <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">Prazo Final</span>
+                            <p className="text-sm text-gray-300 flex items-center gap-2 mt-2">
                                 <Calendar size={14} /> {SelectedProject.prazo}
                             </p>
                         </div>
 
                         <div>
-                            <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Descrição</span>
-                            <p className="text-sm text-gray-600 mt-1 leading-relaxed">{SelectedProject.description}</p>
+                            <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">Descrição</span>
+                            <p className="text-sm text-gray-300 mt-2 leading-relaxedbg-mega-fundo p-4 rounded-lg border border-gray-800">{SelectedProject.description || "Nenhuma descrição fornecida."}</p>    
                         </div>
-                            <div className="flex justify-end gap-3 pt-4 border-t border-gray-100 mt-6">
+                            <div className="flex justify-end gap-3 pt-6 border-t border-gray-800 mt-8">
                                 <div className="flex gap-2">
                                     <button 
                                         type="button" 
                                         onClick={() => prepararEdicao(SelectedProject)}
-                                        className="px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg font-bold text-sm transition-colors shadow-sm"
+                                        className="px-4 py-2 bg-mega-amarelo/20 text-mega-amarelo hover:bg-mega-amarelo hover:text-gray-900 rounded-lg font-bold text-sm transition-colors border border-mega-amarelo/30 hover:border-mega-amarelo"
                                     >
                                         Editar Projeto
                                     </button>
@@ -279,35 +280,35 @@ function ProjectPage() {
                 </div>
             )}
         {Cadastro && (
-            <div className="fixed inset-0 z-50 bg-black/50  flex items-center justify-center p-4">
-                <form onSubmit={SalvarProjeto} className=" p-4 bg-white rounded-xl shadow-xl border border-gray-100 max-w-md w-full overflow-hidden animate-in fade-in duration-150">
-                    <div className="pb-4 border-b border-gray-100 flex justify-between items-center">
-                        <h2 className="text-xl font-bold text-gray-900">
+            <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+                    <form onSubmit={SalvarProjeto} className="p-6 bg-mega-card rounded-xl shadow-2xl border border-gray-800 max-w-md w-full overflow-hidden animate-in fade-in duration-150 max-h-[90vh] overflow-y-auto custom-scrollbar">
+                    <div className="pb-6 border-b border-gray-800 flex justify-between items-center mb-6">
+                        <h2 className="text-xl font-bold text-white">
                             {Editando ? "Editar Projeto" : "Novo Projeto"}
                         </h2>
                         <button type="button" onClick={() => setCadastro(false)} className="p-0 text-red-400 hover:text-red-600 rounded-md">
                             <X size={20} />
                         </button>
                     </div>
-                    <div className="space-y-4">
+                    <div className="space-y-5">
                         <div>
-                            <label className="block text-sm font-medium mb-1 text-gray-700">Nome do Projeto</label>
+                            <label className="block text-sm font-medium mb-1 text-gray-300">Nome do Projeto</label>
                             <input 
                                 type="text" 
                                 name="name" 
                                 placeholder="Digite o nome do projeto" 
                                 value={novoProjeto.name}
                                 onChange={atualizaForms}
-                                className="w-full border rounded px-3 py-2 text-sm focus:outline-blue-500" 
+                                className="bg-mega-fundo border border-gray-700 text-white placeholder-gray-500 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-mega-roxo transition-all w-full" 
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium mb-1 text-gray-700">Status</label>
+                            <label className="block text-sm font-medium mb-1 text-gray-300">Status</label>
                             <select 
                                 name="status" 
                                 value={novoProjeto.status}
                                 onChange={atualizaForms} 
-                                className="w-full border rounded px-3 py-2 text-sm bg-white focus:outline-blue-500"
+                                className="w-full rounded-lg px-4 py-2.5 text-sm bg-mega-fundo border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-mega-roxo"
                             >
                                 <option value="Planejamento">Planejamento</option>
                                 <option value="Em andamento">Em andamento</option>
@@ -315,13 +316,13 @@ function ProjectPage() {
                             </select>
                         </div>
                         <div>
-                            <label className="block text-sm font-medium mb-1 text-gray-700">Prazo Final</label>
+                            <label className="block text-sm font-medium mb-1 text-gray-300">Prazo Final</label>
                             <input 
                                 type="date" 
                                 name="prazo"
                                 value={novoProjeto.prazo}
                                 onChange={atualizaForms} 
-                                className="w-full border rounded px-3 py-2 text-sm focus:outline-blue-500" 
+                                className="w-full rounded-lg px-4 py-2.5 text-sm bg-mega-fundo border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-mega-roxo"
                             />
                         </div>
                         <div className="flex flex-wrap gap-2 mb-2">
@@ -329,9 +330,9 @@ function ProjectPage() {
                                 const dadosMembro = listaMembros.find((m) => m.id === memberId);
                                 if (!dadosMembro) return null;
                                 return (
-                                    <div key={memberId} className="flex items-center gap-1 bg-blue-100 text-blue-800 px-2.5 py-1 rounded-full font-semibold text-xs">
+                                    <div key={memberId} className="flex items-center gap-1 bg-mega-roxo/20 text-mega-roxo border border-mega-roxo/30 px-2.5 py-1 rounded-md font-semibold text-xs">
                                         <span>{dadosMembro.name}</span>
-                                        <button type="button" onClick={() => removerMembro(memberId)} className="hover:text-blue-600 font-bold ml-1 focus:outline-none">
+                                        <button type="button" onClick={() => removerMembro(memberId)} className="hover:text-white font-bold ml-1 focus:outline-none transition-colors">
                                             &times;
                                         </button>
                                     </div>
@@ -339,45 +340,44 @@ function ProjectPage() {
                             })}
                         </div>
                         <div className="relative mb-4">
-                            <label className="block text-sm font-medium mb-1 text-gray-700">Adicionar Membros</label>
+                            <label className="block text-sm font-medium mb-1 text-gray-300">Adicionar Membros</label>
                             <input
                                 type="text"
                                 placeholder="Digite o nome do membro"
                                 value={nomePesquisado}
                                 onChange={(e) => setNomePesquisado(e.target.value)}
-                                className="w-full border rounded px-3 py-2 text-sm focus:outline-blue-500"
-                            />
+                                className="w-full bg-mega-fundo border border-gray-700 text-white placeholder-gray-500 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-mega-roxo transition-all"/>
                             {nomePesquisado.trim() !== "" && membrosFiltrados.length > 0 && (
-                                <div className="absolute z-50 w-full bg-white border border-gray-200 rounded-lg mt-1 shadow-lg max-h-48 overflow-y-auto">
+                                <div className="absolute z-50 w-full bg-mega-card border border-gray-700 rounded-lg mt-2 shadow-2xl max-h-48 overflow-y-auto custom-scrollbar">
                                     {membrosFiltrados.map((membro) => (
                                         <button
                                             key={membro.id}
                                             type="button"
                                             onClick={() => adicionarMembro(membro.id)}
-                                            className="w-full text-left px-4 py-2 text-sm hover:bg-blue-50 transition-colors flex justify-between items-center"
-                                        >
-                                            <span className="font-medium text-gray-900">{membro.name}</span>
-                                            <span className="text-xs text-gray-500">{membro.cargo}</span>
+                                            className="w-full text-left px-4 py-3 text-sm hover:bg-gray-800 transition-colors flex justify-between items-center border-b border-gray-800 last:border-0"
+                                            >
+                                            <span className="font-medium text-white">{membro.name}</span>
+                                            <span className="text-xs text-mega-amarelo font-medium">{membro.cargo}</span>
                                         </button>
                                     ))}
                                 </div>
                             )}
                         </div>
                         <div>
-                            <label className="block text-sm font-medium mb-1 text-gray-700">Descrição do Projeto</label>
+                            <label className="block text-sm font-medium mb-2 text-gray-300">Descrição do Projeto</label>
                             <textarea 
                                 rows="3"
                                 name="description"
                                 placeholder="Descreva brevemente os objetivos do projeto..." 
                                 value={novoProjeto.description}
                                 onChange={atualizaForms}
-                                className="w-full border rounded px-3 py-2 text-sm focus:outline-blue-500 resize-none"
+                                className="w-full bg-mega-fundo border border-gray-700 text-white placeholder-gray-500 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-mega-roxo transition-all resize-none custom-scrollbar"
                             />
                         </div>
-                        <div className="flex justify-end pt-4 border-t border-gray-100 mt-6 pb-2">
+                        <div className="pt-6 mt-2 border-t border-gray-800 flex justify-end pb-2">
                             <button 
                                 type="submit"
-                                className="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-bold text-sm transition-colors shadow-sm"
+                                className="w-full px-6 py-3 bg-mega-roxo hover:bg-mega-roxo-escuro text-white rounded-lg font-bold transition-colors shadow-md text-sm"
                             >
                                 {Editando ? "Salvar Alterações" : "Cadastrar Projeto"}
                             </button>

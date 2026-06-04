@@ -31,7 +31,7 @@ function App() {
             <RotaProtegida>
               <div className = "flex min-h-screen w-full bg-gray-50">
                 <Sidebar />
-                <main className="flex-1 p-6 overflow-y-auto">
+                <main className="flex-1 p-6 overflow-y-auto bg-mega-fundo">
                   <Routes>
                     <Route path="/" element={<DashboardPage />} />
                     <Route path="/membros" element={<MemberPage />} />
