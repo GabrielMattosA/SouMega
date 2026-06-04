@@ -69,6 +69,7 @@ router.get("/available/count", auth, async (req, res) => {
 
     res.json({ count });
   } catch (error) {
+    console.log("ERRO MEMBERS AVAILABLE COUNT:", error);
     res.status(500).json({ error: "Erro ao buscar membros disponíveis" });
   }
 });
