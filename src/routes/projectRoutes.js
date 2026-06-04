@@ -13,14 +13,16 @@ import { validate } from "../middlewares/validate.js";
 
 import { projectSchema } from "../schemas/projectSchema.js";
 
+import { auth } from "../middlewares/auth.js";
+
 const router = express.Router();
 
-router.post("/", validate(projectSchema), createProject);
-router.get("/", getProjects);
-router.put("/:id", validate(projectSchema), updateProject);
-router.delete("/:id", deleteProject);
+router.post("/", auth, validate(projectSchema), createProject);
+router.get("/", auth, getProjects);
+router.put("/:id", auth, validate(projectSchema), updateProject);
+router.delete("/:id", auth, deleteProject);
 
-router.get("/count", async (req, res) => {
+router.get("/count", auth, async (req, res) => {
   const count = await prisma.project.count();
   res.json({ count });
 });
