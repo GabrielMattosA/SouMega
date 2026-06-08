@@ -11,7 +11,7 @@ export async function login(req, res) {
   try {
     //Procura o úsuario com o rga informado no banco de dados
     const user = await prisma.member.findUnique({
-      where: { rga, password },
+      where: { rga },
     });
 
     //Se não encontrar o úsuario, bloqueia.
