@@ -10,8 +10,18 @@ export async function login(req, res) {
   });
 
 
-  if (!user) {
-    return res.status(404).json({ error: "RGA não encontrado." });
+    //Cria um token
+    const token = jwt.sign(
+      { id: user.id, cargo: user.cargo },
+      process.env.JWT_TOKEN,
+      {
+        expiresIn: "2h",
+      },
+    );
+
+    res.json({ token });
+  } catch (error) {
+    res.status(500).json({ error: "Erro no login" });
   }
 
   const token = jwt.sign(
