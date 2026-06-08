@@ -1,10 +1,12 @@
     import React from "react";
     import { useNavigate } from "react-router-dom";
+    import { useAuth } from "../contexto/AuthContext";
 
     function LoginPage () {
         const [rga, setRga] = React.useState("")
         const [senha, setSenha] = React.useState("")
         const [erro, setErro] = React.useState("")
+        const { loginGlobal } = useAuth()
         const navigate = useNavigate();
 
         const lidarLogin = async (e) => {
@@ -32,8 +34,7 @@
                 throw new  Error(dados.error || "Falha ao realizar login.");
             }
 
-            localStorage.setItem("token", dados.token);
-
+            loginGlobal(dados.token);
             navigate("/");
 
             } catch (err) {
@@ -42,10 +43,10 @@
         };
         return (
             <div className="min-h-screen bg-mega-fundo flex flex-col justify-center items-center p-4 font-sans">
-                <div className="bg-mega-card py-4 px-6 rounded-xl shadow-md border border-gray-100 max-w-sm w-full">
+                <div className="bg-mega-card py-4 px-6 rounded-xl shadow-md border border-gray-00 max-w-sm w-full">
                     <div className="text-center mb-6">
                         <h1 className="text-4xl font-bold text-mega-amarelo">SouMega</h1>
-                        <p className="text-sm text-gray-400 mt-2">Insira seu RGA para acessar o sistema</p>
+                        <p className="text-sm text-gray-400 mt-2">Insira seu dados para acessar o sistema</p>
                     </div>
 
                     {erro && (
