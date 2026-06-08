@@ -3,6 +3,7 @@
 
     function LoginPage () {
         const [rga, setRga] = React.useState("")
+        const [senha, setSenha] = React.useState("")
         const [erro, setErro] = React.useState("")
         const navigate = useNavigate();
 
@@ -10,8 +11,8 @@
             e.preventDefault()
             setErro("")
 
-            if (!rga.trim()) {
-                setErro("Preencha o RGA")
+            if (!rga.trim() || !senha.trim()) {
+                setErro("Preencha todos os campos")
                 return
             }
             try {
@@ -21,7 +22,8 @@
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    rga: rga.trim()
+                    rga: rga.trim(),
+                    senha: senha.trim(),
                 }),
             });
 
@@ -56,6 +58,11 @@
                             <label className ="block text-sm font-medium text-mega-amarelo mb-1">RGA</label>
                             <input type="text" placeholder="Ex: 0000.0000.000-0"
                             value={rga} onChange={(e) => setRga(e.target.value)} className="w-full bg-mega-fundo border border-gray-700 text-white placeholder-gray-500 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-mega-roxo transition-all"/>
+                        </div>
+                        <div>
+                            <label className ="block text-sm font-medium text-mega-amarelo mb-1">Senha</label>
+                            <input type="password" placeholder="Digite sua senha"
+                            value={senha} onChange={(e) => setSenha(e.target.value)} className="w-full bg-mega-fundo border border-gray-700 text-white placeholder-gray-500 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-mega-roxo transition-all"/>
                         </div>
                         <button  type="submit" className="w-full bg-mega-roxo hover:bg-mega-roxo-escuro text-white font-bold py-2 px-4 rounded-lg text-sm transition shadow-md mt-2">
                             Entrar
