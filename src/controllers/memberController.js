@@ -1,14 +1,16 @@
 import prisma from "../prisma/client.js";
+import bcrypt from "bcrypt";
 import { memberSchema } from "../schemas/memberSchema.js";
 import { gerarSenha } from "./passwordgenerate.js";
 
 export async function createMember(req, res) {
   try {
     const senha = gerarSenha(req.body.name, req.body.rga);
+    const senhaCripto = await bcrypt.hash(senha, 10);
     const member = await prisma.member.create({
       data: {
         ...req.body,
-        password: senha,
+        password: senhaCripto,
       },
     });
 
