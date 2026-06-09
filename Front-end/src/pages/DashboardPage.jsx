@@ -1,5 +1,5 @@
 import React from "react";
-import {Users, FolderKanban, CheckCircle2, UserCheck} from "lucide-react";
+import {LayoutDashboard, Users, FolderKanban, CheckCircle2, UserCheck} from 'lucide-react';
 
 function DashboardPage() {
     const [membrosCount, setMembrosCount] = React.useState(0);
@@ -45,7 +45,10 @@ function DashboardPage() {
     return (
         <div className="min-h-screen bg-mega-fundo p-8 space-y-8 font-sans">
             <div>
-                <h1 className="text-3xl font-bold text-mega-amarelo tracking-tight">Dashboard</h1>
+                <h1 className="text-3xl font-bold text-mega-amarelo tracking-tight flex items-center gap-3">
+                    <LayoutDashboard className="w-8 h-8" /> 
+                    Dashboard
+                </h1>
                 <p className="text-white mt-1">Bem-vindo ao painel de controle do SouMega.</p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">

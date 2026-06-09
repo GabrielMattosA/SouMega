@@ -1,5 +1,5 @@
 import React from "react";
-import {Folder, Calendar, X, Plus} from 'lucide-react';
+import {FolderKanban, Calendar, X, Plus} from 'lucide-react';
 function ProjectPage() {
 
     const [projects, setProjects] = React.useState([]);
@@ -189,7 +189,7 @@ function ProjectPage() {
         <div className ="max-w-6xl mx-auto"></div>
         <div className ="flex justify-between items-center mb-8">
             <h1 className="text-3xl font-bold flex items-center gap-3 text-white tracking-tight">
-                <Folder className="w-8 h-8 text-mega-amarelo" />
+                <FolderKanban className="w-8 h-8 text-mega-amarelo" />
                 Projetos
             </h1>
         </div>
@@ -288,7 +288,7 @@ function ProjectPage() {
                         <h2 className="text-xl font-bold text-white">
                             {Editando ? "Editar Projeto" : "Novo Projeto"}
                         </h2>
-                        <button type="button" onClick={() => setCadastro(false)} className="p-0 text-red-400 hover:text-red-600 rounded-md">
+                        <button type="button" onClick={() => setCadastro(false)} className="p-0 text-red-500 hover:text-red-700 transition-colors rounded-md">
                             <X size={20} />
                         </button>
                     </div>
@@ -332,9 +332,9 @@ function ProjectPage() {
                                 const dadosMembro = listaMembros.find((m) => m.id === memberId);
                                 if (!dadosMembro) return null;
                                 return (
-                                    <div key={memberId} className="flex items-center gap-1 bg-mega-roxo/20 text-mega-roxo border border-mega-roxo/30 px-2.5 py-1 rounded-md font-semibold text-xs">
+                                    <div key={memberId} className="flex items-center gap-1 bg-mega-roxo/20 text-white border border-mega-roxo/30 px-2.5 py-1 rounded-md font-semibold text-xs">
                                         <span>{dadosMembro.name}</span>
-                                        <button type="button" onClick={() => removerMembro(memberId)} className="hover:text-white font-bold ml-1 focus:outline-none transition-colors">
+                                        <button type="button" onClick={() => removerMembro(memberId)} className="hover:text-red-400 font-bold ml-1 focus:outline-none transition-colors">
                                             &times;
                                         </button>
                                     </div>
