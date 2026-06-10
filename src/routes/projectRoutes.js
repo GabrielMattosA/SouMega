@@ -87,9 +87,35 @@ router.post("/", auth, validate(projectSchema), createProject);
  *         schema:
  *           type: integer
  *         description: ID do projeto
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 example: "Projeto Atualizado"
+ *               status:
+ *                 type: string
+ *                 example: "Em andamento"
+ *               prazo:
+ *                 type: string
+ *                 example: "2026-12-31"
+ *               description:
+ *                 type: string
+ *                 example: "Descrição atualizada do projeto"
+ *               members:
+ *                 type: array
+ *                 items:
+ *                   type: integer
+ *                 example: [1, 2]
  *     responses:
  *       200:
  *         description: Projeto atualizado com sucesso
+ *       400:
+ *         description: Erro de validação ou dados inválidos
  *       401:
  *         description: Token não enviado ou inválido
  *       404:

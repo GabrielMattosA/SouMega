@@ -89,6 +89,31 @@ router.post("/", auth, validate(memberSchema), createMember);
  *         schema:
  *           type: integer
  *         description: ID do membro
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 example: "Heitor Atualizado"
+ *               email:
+ *                 type: string
+ *                 example: "heitor@email.com"
+ *               rga:
+ *                 type: string
+ *                 example: "202519040073"
+ *               cargo:
+ *                 type: string
+ *                 example: "Diretor"
+ *               diretoria:
+ *                 type: string
+ *                 example: "TI"
+ *               time:
+ *                 type: string
+ *                 example: "Backend"
  *     responses:
  *       200:
  *         description: Membro atualizado com sucesso
