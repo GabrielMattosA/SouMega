@@ -1,7 +1,9 @@
 import React from "react";
 import {FolderKanban, Calendar, X, Plus} from 'lucide-react';
+import { useAuth } from "../../contexto/AuthContext";
 function ProjectPage() {
 
+    const { ehDiretor } = useAuth();
     const [projects, setProjects] = React.useState([]);
     const [AbrirModal, setAbrirModal] = React.useState(false);
     const [Cadastro, setCadastro] = React.useState(false);
@@ -193,6 +195,7 @@ function ProjectPage() {
                 Projetos
             </h1>
         </div>
+        {ehDiretor && (
         <button 
             onClick={() => {
                 setEditando(null);
@@ -203,6 +206,7 @@ function ProjectPage() {
             >
                 <Plus size={16} /> Novo Projeto
         </button>
+        )}
         <div className="bg-mega-card rounded-xl shadow-lg border border-gray-800 overflow-hidden">
             <table className="w-full text-left border-collapse">
                 <thead className="bg-gray-800/50">
@@ -260,6 +264,7 @@ function ProjectPage() {
                             <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">Descrição</span>
                             <p className="text-sm text-gray-300 mt-2 leading-relaxedbg-mega-fundo p-4 rounded-lg border border-gray-800">{SelectedProject.description || "Nenhuma descrição fornecida."}</p>    
                         </div>
+                        {ehDiretor && (
                             <div className="flex justify-end gap-3 pt-6 border-t border-gray-800 mt-8">
                                 <div className="flex gap-2">
                                     <button 
@@ -277,6 +282,7 @@ function ProjectPage() {
                                     </button>
                                 </div>
                             </div>
+                            )}
                         </div>
                     </div>
                 </div>

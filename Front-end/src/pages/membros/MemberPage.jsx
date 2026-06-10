@@ -1,8 +1,10 @@
     import React from 'react';
     import { ChevronRight, X, Users, Plus } from 'lucide-react';
+    import { useAuth } from '../../contexto/AuthContext';
 
     function MemberPage() {
         
+        const { ehDiretor } = useAuth();
         const [membroSelecionado, setMembroSelecionado] = React.useState(null);
         const [Cadastro, setCadastro] = React.useState(false);
         const [Editando, setEditando] = React.useState(null);
@@ -152,6 +154,7 @@
             </h1>
             
             <div className="flex justify-start mb-8">
+                {ehDiretor && (
                 <button onClick={() => { 
                     setEditando(null);
                     setNovoMembro({ name: '', rga: '', email: '', cargo: '', diretoria: '', time: '' });
@@ -159,6 +162,7 @@
                     className=" flex items-center gap-2 px-4 py-2 bg-mega-roxo hover:bg-mega-roxo-escuro text-white rounded-lg font-bold shadow-md transition-colors">
                 <Plus size={16} /> Cadastrar Novo Membro
                 </button>
+                )}  
             </div>
             <div className="space-y-8">
                 {renderizaCargo("Presidente", "Presidente")}
@@ -183,6 +187,7 @@
                         <p><strong>Diretoria:</strong> {membroSelecionado.diretoria || 'Não informado'}</p>
                         <p><strong>Time Principal:</strong> {membroSelecionado.time || 'Não informado'}</p>
                     </div>
+                    {ehDiretor && (
                     <div className="mt-8 pt-6 border-t border-gray-800 flex justify-end gap-3">
                             <button 
                                 onClick={() => excluirMembro(membroSelecionado.id)}
@@ -197,6 +202,7 @@
                                 Editar Membro
                             </button>
                         </div>
+                    )}
                 </div>
                 </div>
             )}

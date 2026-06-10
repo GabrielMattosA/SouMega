@@ -5,6 +5,7 @@ import ProjectPage from './pages/projetos/ProjectPage';
 import Sidebar from './componentes/Sidebar';
 import DashboardPage from './pages/DashboardPage';
 import PropTypes from 'prop-types';
+import AuthProvider from './contexto/AuthContext';
 
 function RotaProtegida({children}) {
   const token = localStorage.getItem("token");
@@ -23,6 +24,7 @@ RotaProtegida.propTypes = {
 function App() {
   return (
     <BrowserRouter>
+      <AuthProvider>
       <Routes>
         <Route path="/login" element={<LoginPage/>} />
         <Route 
@@ -44,6 +46,7 @@ function App() {
           }
         />
       </Routes>
+      </AuthProvider>
     </BrowserRouter>
   );
 }
