@@ -6,9 +6,10 @@ import Sidebar from './componentes/Sidebar';
 import DashboardPage from './pages/DashboardPage';
 import PropTypes from 'prop-types';
 import AuthProvider from './contexto/AuthContext';
+import { useAuth } from './contexto/AuthContext';
 
 function RotaProtegida({children}) {
-  const token = localStorage.getItem("token");
+  const token = useAuth().token;
 
   if (!token) {
     return <Navigate to="/login" replace />;
