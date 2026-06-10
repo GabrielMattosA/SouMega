@@ -1,5 +1,6 @@
 import { Link , useLocation ,useNavigate } from "react-router-dom";
 import { LayoutDashboard, Users, FolderKanban , LogOut } from "lucide-react";
+import { useAuth } from "../contexto/AuthContext";
 
 function Sidebar() {
   const location = useLocation();
