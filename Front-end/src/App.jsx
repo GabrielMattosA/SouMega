@@ -5,9 +5,10 @@ import ProjectPage from './pages/projetos/ProjectPage';
 import Sidebar from './componentes/Sidebar';
 import DashboardPage from './pages/DashboardPage';
 import PropTypes from 'prop-types';
+import { useAuth } from './contexto/AuthContext';
 
 function RotaProtegida({children}) {
-  const token = localStorage.getItem("token");
+  const { token } = useAuth();
 
   if (!token) {
     return <Navigate to="/login" replace />;
