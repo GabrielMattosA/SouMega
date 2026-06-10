@@ -11,8 +11,13 @@ export function auth(req, res, next) {
   const token = header.split(" ")[1];
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    //Verifica se o token é válido
+    const decoded = jwt.verify(token, process.env.JWT_TOKEN);
+
+    //Salva os dados na requisição
     req.user = decoded;
+
+    //Libera o acesso
     next();
   } catch (err) {
     return res.status(401).json({ error: "Token inválido" });
