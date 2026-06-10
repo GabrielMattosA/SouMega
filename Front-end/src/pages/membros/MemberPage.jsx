@@ -1,8 +1,10 @@
     import React from 'react';
     import { ChevronRight, X, Users, Plus } from 'lucide-react';
+    import { useAuth } from '../../contexto/AuthContext';
 
     function MemberPage() {
         
+        const { ehDiretor } = useAuth();
         const [membroSelecionado, setMembroSelecionado] = React.useState(null);
         const [Cadastro, setCadastro] = React.useState(false);
         const [Editando, setEditando] = React.useState(null);
@@ -29,9 +31,11 @@
                 }
                 try {
                     if (Editando) {
-                        const resposta = await fetch(`http://localhost:3000/members/${Editando.id}`, {
+                        const resposta = await fetch(`${import.meta.env.VITE_API_URL}/members/${Editando.id}`, {
                             method: 'PUT',
-                            headers: { 'Content-Type': 'application/json' },
+                            headers: { 'Content-Type': 'application/json',
+                            Authorization: `Bearer ${localStorage.getItem("token")}`,
+                            },
                             body: JSON.stringify(novoMembro)
                         });
                     if (!resposta.ok) throw new Error('Erro ao editar membro.');
@@ -40,9 +44,10 @@
                         alert('Membro editado com sucesso!');
                         setEditando(null);
                     } else {
-                    const resposta = await fetch('http://localhost:3000/members', {
+                    const resposta = await fetch(`${import.meta.env.VITE_API_URL}/members`, {
                         method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
+                        headers: { 'Content-Type': 'application/json',
+                        Authorization: `Bearer ${localStorage.getItem("token")}` },
                         body: JSON.stringify(novoMembro)
                     });
                     if (!resposta.ok) throw new Error('Erro ao cadastrar membro.');
@@ -61,8 +66,11 @@
 
         const excluirMembro = async (id) => {
             try {
-                const resposta = await fetch(`http://localhost:3000/members/${id}`, {
-                    method: 'DELETE'
+                const resposta = await fetch(`${import.meta.env.VITE_API_URL}/members/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem("token")}`,
+                    },
                 });
                 if (!resposta.ok) {
                     throw new Error('Erro ao excluir membro:');
@@ -79,7 +87,9 @@
         React.useEffect(() => {
             const membrosSalvos = async () => {
                 try{
-                const resposta = await fetch('http://localhost:3000/members');
+                    const resposta = await fetch(`${import.meta.env.VITE_API_URL}/members`, {
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem("token")}` }
+});
                 if (!resposta.ok) {
                     console.error('Erro ao buscar membros:');
                     return;
@@ -114,18 +124,18 @@
             const membrosFiltrados = membrosDaMega.filter((pessoa) => pessoa.cargo === filtro);
             if (membrosFiltrados.length === 0) return null;
             return (
-                <div className="space-y-3">
-                    <h2 className="text-xl font-bold text-gray-800 border-b border-gray-100 pb-2">{titulo}</h2>
+                <div className="space-y-4">
+                    <h2 className="text-xl font-bold text-white border-b border-gray-800 pb-2">{titulo}</h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         {membrosFiltrados.map((pessoa) => (
-                            <div key={pessoa.id} className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm flex justify-between items-center hover:border-blue-300 transition">
+                            <div key={pessoa.id} className="bg-mega-card p-4 rounded-xl border border-gray-800 shadow-lg flex justify-between items-center hover:border-mega-roxo transition-colors duration-300">
                                 <div>
-                                    <p className="font-semibold text-gray-900">{pessoa.name}</p>
-                                    <p className="text-xs text-gray-500 mt-0.5">{pessoa.diretoria} • {pessoa.time || 'Sem Time'}</p>
+                                    <p className="font-semibold text-white">{pessoa.name}</p>
+                                    <p className="text-xs text-gray-400 mt-0.5">{pessoa.diretoria} • {pessoa.time || 'Sem Time'}</p>
                                 </div>
                                 <button 
                                     onClick={() => setMembroSelecionado(pessoa)}
-                                    className="p-1.5 bg-gray-50 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition"
+                                    className="p-2 bg-mega-fundo hover:bg-mega-roxo/20 hover:text-mega-amarelo text-gray-400 rounded-lg transition-colors"
                                 >
                                     <ChevronRight className="w-5 h-5" />
                                 </button>
@@ -136,20 +146,23 @@
             );
         };
         return (
-            <div className="p-8">
-            <h1 className="text-3xl font-bold mb-8 flex gap-3 items-center"> 
-                <Users className="w-8 h-8 text-blue-600" />
+            <div className="min-h-screen w-full bg-mega-fundo p-8 font-sans text-white">
+                <div className="max-w-7xl mx-auto"> 
+            <h1 className="text-3xl font-bold mb-8 flex gap-3 items-center tracking-tight"> 
+                <Users className="w-8 h-8 text-mega-amarelo" />
                 Membros da Mega
             </h1>
             
-            <div className="flex justify-start mb-4">
+            <div className="flex justify-start mb-8">
+                {ehDiretor && (
                 <button onClick={() => { 
                     setEditando(null);
                     setNovoMembro({ name: '', rga: '', email: '', cargo: '', diretoria: '', time: '' });
                     setCadastro(true)}}
-                    className=" flex items-center gap-2 px-2 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded font-bold">
+                    className=" flex items-center gap-2 px-4 py-2 bg-mega-roxo hover:bg-mega-roxo-escuro text-white rounded-lg font-bold shadow-md transition-colors">
                 <Plus size={16} /> Cadastrar Novo Membro
                 </button>
+                )}  
             </div>
             <div className="space-y-8">
                 {renderizaCargo("Presidente", "Presidente")}
@@ -158,15 +171,15 @@
             </div>
 
             {membroSelecionado && (
-                <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
-                <div className="bg-white p-6 rounded shadow-lg w-96">
-                    <div className= "flex justify-between items-center mb-4">
-                    <h3 className="text-lg font-bold">Detalhes do Membro</h3>
+                <div className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4 backdrop-blur-sm">
+                <div className="bg-mega-card border border-gray-800 p-6 rounded-xl shadow-2xl w-full max-w-md">
+                    <div className= "flex justify-between items-center mb-6">
+                    <h3 className="text-lg font-bold text-white">Detalhes do Membro</h3>
                     <button onClick={() => setMembroSelecionado(null)} className="text-red-500 hover:text-red-700 transition-colors">
                     <X className="w-6 h-6" />
                     </button>
                     </div>
-                    <div className="space-y-3 text-sm text-gray-700">
+                    <div className="space-y-4 text-sm text-gray-300">
                         <p><strong>Nome:</strong> {membroSelecionado.name}</p>
                         <p><strong>RGA:</strong> {membroSelecionado.rga || 'Não informado'}</p>
                         <p><strong>Email:</strong> {membroSelecionado.email || 'Não informado'}</p>
@@ -174,66 +187,68 @@
                         <p><strong>Diretoria:</strong> {membroSelecionado.diretoria || 'Não informado'}</p>
                         <p><strong>Time Principal:</strong> {membroSelecionado.time || 'Não informado'}</p>
                     </div>
-                    <div className="mt-6 pt-4 border-t flex justify-center gap-4">
+                    {ehDiretor && (
+                    <div className="mt-8 pt-6 border-t border-gray-800 flex justify-end gap-3">
                             <button 
                                 onClick={() => excluirMembro(membroSelecionado.id)}
-                                className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded font-bold text-sm transition-colors"
+                                className="px-4 py-2 bg-red-900/30 text-red-400 hover:bg-red-600 hover:text-white rounded-lg font-bold text-sm transition-colors border border-red-900/50 hover:border-red-600"
                             >
                                 Excluir Membro
                             </button>
                             <button 
                                 onClick={() => prepararEdicao(membroSelecionado)}
-                                className="px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white rounded font-bold text-sm transition-colors"
+                                className="px-4 py-2 bg-mega-amarelo/20 text-mega-amarelo hover:bg-mega-amarelo hover:text-gray-900 rounded-lg font-bold text-sm transition-colors border border-mega-amarelo/30 hover:border-mega-amarelo"
                             >
                                 Editar Membro
                             </button>
                         </div>
+                    )}
                 </div>
                 </div>
             )}
             {Cadastro && (
-                <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
-                <form onSubmit={salvarMembro} className="bg-white p-6 rounded shadow-lg w-full max-w-md max-h-[85vh] flex flex-col overflow-y-auto">
+                <div className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4 backdrop-blur-sm">
+                <form onSubmit={salvarMembro} className="bg-mega-card border border-gray-800 p-6 rounded-xl shadow-2xl w-full max-w-lg max-h-[85vh] flex flex-col overflow-y-auto custom-scrollbar">
                     <div className= "flex justify-between items-center mb-6">
-                    <h3 className="text-xl font-bold">
+                    <h3 className="text-xl font-bold text-white">
                         {Editando ? 'Editar Membro' : 'Cadastrar Novo Membro'}
                     </h3>
                     <button onClick={() => setCadastro(false)} className="text-red-500 hover:text-red-700 transition-colors">
                     <X className="w-6 h-6" />
                     </button>
                     </div>
-                    <div className= "space-y-2">
+                    <div className= "space-y-4">
                         <div>
-                            <label className="block text-sm font-medium mb-1">Nome Completo</label>
+                            <label className="block text-sm text-gray-300 font-medium mb-1">Nome Completo</label>
                             <input type="text" name="name" placeholder="Digite o nome completo" 
                             value={novoMembro.name}
                             onChange={atualizarForms}
-                            className="w-full border rounded px-3 py-2" />
+                            className="w-full bg-mega-fundo border border-gray-700 text-white placeholder-gray-500 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-mega-roxo transition-all" />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium mb-1">RGA</label>
-                            <input type="text" name="rga" placeholder="Ex. 0000.0000.000-0" 
+                            <label className="block text-sm text-gray-300 font-medium mb-1">RGA</label>
+                            <input type="text" name="rga" placeholder="Apenas números" 
                             value={novoMembro.rga}
                             onChange={atualizarForms}
-                            className="w-full border rounded px-3 py-2" />
+                            className="w-full bg-mega-fundo border border-gray-700 text-white placeholder-gray-500 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-mega-roxo transition-all" />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium mb-1">Email</label>
+                            <label className="block text-sm font-medium text-gray-300 mb-1">Email</label>
                             <input type="email" name="email" placeholder="Digite o email institucional" 
                             value={novoMembro.email}
                             onChange={atualizarForms}
-                            className="w-full border rounded px-3 py-2" />
+                            className="w-full bg-mega-fundo border border-gray-700 text-white placeholder-gray-500 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-mega-roxo transition-all" />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium mb-2">Cargo</label>
+                            <label className="block text-sm text-gray-300 font-medium mb-2">Cargo</label>
                             <div className="grid grid-cols-2 gap-2">
                                 {['Presidente', 'Diretor(a)', 'Membro'].map((cargo) => (
-                                    <label key={cargo} className="flex items-center gap-2 p-2 border rounded hover:bg-gray-50 cursor-pointer text-sm">
+                                    <label key={cargo} className="flex items-center gap-3 p-3 border border-gray-700 rounded-lg hover:bg-gray-800 cursor-pointer text-sm text-gray-300 transition-colors">
                                         <input type="radio" name="cargo" 
                                         value={cargo} 
                                         checked={novoMembro.cargo === cargo}
                                         onChange={atualizarForms}
-                                        className="text-blue-500" />
+                                        className="accent-mega-roxo w-4 h-4" />
                                         <span>{cargo}</span>
                                     </label>
                                 ))}
@@ -241,38 +256,38 @@
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium mb-2">Diretoria</label>
+                            <label className="block text-sm font-medium text-gray-300 mb-2 mt-2">Diretoria</label>
                             <div className="grid grid-cols-2 gap-2">
                                 {['Presidência', 'Projetos', 'Comercial', 'Marketing', 'Gestão de Pessoas', 'Financeiro'].map((diretoria) => (
-                                    <label key={diretoria} className="flex items-center gap-2 p-2 border rounded hover:bg-gray-50 cursor-pointer text-sm">
+                                    <label key={diretoria} className="flex items-center gap-3 p-3 border border-gray-700 rounded-lg hover:bg-gray-800 cursor-pointer text-sm text-gray-300 transition-colors">
                                         <input type="radio" name="diretoria" 
                                         value={diretoria} 
                                         checked={novoMembro.diretoria === diretoria}
                                         onChange={atualizarForms}
-                                        className="text-blue-500" />
+                                        className="accent-mega-roxo w-4 h-4" />
                                         <span>{diretoria}</span>
                                     </label>
                                 ))}
                             </div>
                         </div>
                         <div>
-                            <label className="block text-sm font-medium mb-2">Time Principal</label>
+                            <label className="block text-sm font-medium text-gray-300 mb-2 mt-2">Time Principal</label>
                             <div className="grid grid-cols-2 gap-2">
                                 {['Front-end', 'Back-end', 'UI/UX Design'].map((time) => (
-                                    <label key={time} className="flex items-center gap-2 p-2 border rounded hover:bg-gray-50 cursor-pointer text-sm">
+                                    <label key={time} className="flex items-center gap-3 p-3 border border-gray-700 rounded-lg hover:bg-gray-800 cursor-pointer text-sm text-gray-300 transition-colors">
                                         <input type="radio" name="time" 
                                         value={time} 
                                         checked={novoMembro.time === time}
                                         onChange={atualizarForms}
-                                        className="text-blue-500" />
+                                        className="accent-mega-roxo w-4 h-4" />
                                         <span>{time}</span>
                                     </label>
                                 ))}
                             </div>
                         </div>
-                        <div className="space-y-2">
+                        <div className="pt-6 mt-4 border-t border-gray-800">
                         <button type='submit' 
-                        className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded font-bold mt-4">
+                        className="w-full px-4 py-3 bg-mega-roxo hover:bg-mega-roxo-escuro text-white rounded-lg font-bold transition-colors shadow-md">
                             {Editando ? 'Salvar Alterações' : 'Cadastrar Membro'}
                         </button>
                     </div>
@@ -281,7 +296,7 @@
                 </div>
             )}
             </div>
-            
-        );
-    }
-    export default MemberPage;
+        </div>
+    );
+}
+export default MemberPage;

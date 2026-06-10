@@ -1,11 +1,13 @@
 import prisma from "../prisma/client.js";
 import jwt from "jsonwebtoken";
+//Importação do bcrypt
 import bcrypt from "bcrypt";
 
 export async function login(req, res) {
   const { rga, password } = req.body;
 
   try {
+    //Procura o úsuario com o rga informado no banco de dados
     const user = await prisma.member.findUnique({
       where: { rga },
     });
@@ -28,7 +30,12 @@ export async function login(req, res) {
 
     res.json({ token });
   } catch (error) {
-    console.error(error);
     res.status(500).json({ error: "Erro no login" });
   }
+
+  const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+    expiresIn: "2h",
+  });
+
+  res.json({ token });
 }
