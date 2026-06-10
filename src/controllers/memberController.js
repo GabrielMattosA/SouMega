@@ -103,22 +103,3 @@ export async function updateMember(req, res) {
     });
   }
 }
-
-export async function updateMember(req, res) {
-  try {
-    const id = Number(req.params.id);
-
-    const member = await prisma.member.update({
-      where: {
-        id,
-      },
-      data: req.body,
-    });
-
-    res.json(member);
-  } catch (error) {
-    res.status(500).json({
-      error: "Erro interno do servidor",
-    });
-  }
-}
