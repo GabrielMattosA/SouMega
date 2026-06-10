@@ -1,24 +1,34 @@
-//Importação do prisma e do JWT que vai servir para crair tokens
 import prisma from "../prisma/client.js";
 import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
 
-//Função de login utilizando o RGA
 export async function login(req, res) {
+  const { rga, password } = req.body;
 
-  const user = await prisma.member.findUnique({
-    where: { rga: req.body.rga },
-  });
+  try {
+    const user = await prisma.member.findUnique({
+      where: { rga },
+    });
 
+    if (!user) {
+      return res.status(401).json({ error: "RGA ou senha inválidos." });
+    }
 
-  if (!user) {
-    return res.status(404).json({ error: "RGA não encontrado." });
+    const senhaValida = await bcrypt.compare(password, user.password);
+
+    if (!senhaValida) {
+      return res.status(401).json({ error: "RGA ou senha inválidos." });
+    }
+
+    const token = jwt.sign(
+      { id: user.id, cargo: user.cargo },
+      process.env.JWT_SECRET,
+      { expiresIn: "2h" }
+    );
+
+    res.json({ token });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Erro no login" });
   }
-
-  const token = jwt.sign(
-  { id: user.id },
-  process.env.JWT_SECRET,
-  { expiresIn: "2h" }
-  );
-  
-  res.json({ token });
 }

@@ -1,4 +1,4 @@
-import prisma from "../prisma/client.js"
+import prisma from "../prisma/client.js";
 import { handlePrismaError } from "../utils/prismaErrors.js";
 
 export async function createProject(req, res) {
@@ -12,9 +12,7 @@ export async function createProject(req, res) {
         prazo,
         description,
         members: {
-          connect: members?.map((id) => ({
-            id: Number(id),
-          })) || [],
+          connect: members?.map((id) => ({ id: Number(id) })) || [],
         },
       },
       include: {
@@ -44,11 +42,23 @@ export async function getProjects(req, res) {
 
 export async function updateProject(req, res) {
   try {
+    const id = Number(req.params.id);
+    const { name, status, prazo, description, members } = req.body;
+
     const project = await prisma.project.update({
-      where: {
-        id: Number(req.params.id),
+      where: { id },
+      data: {
+        name,
+        status,
+        prazo,
+        description,
+        members: {
+          set: members?.map((id) => ({ id: Number(id) })) || [],
+        },
       },
-      data: req.body,
+      include: {
+        members: true,
+      },
     });
 
     res.json(project);
@@ -59,14 +69,14 @@ export async function updateProject(req, res) {
 
 export async function deleteProject(req, res) {
   try {
+    const id = Number(req.params.id);
+
     await prisma.project.delete({
-      where: {
-        id: Number(req.params.id),
-      },
+      where: { id },
     });
 
     res.json({
-      message: "Projeto removido com sucesso",
+      message: "Projeto deletado",
     });
   } catch (error) {
     return handlePrismaError(error, res);

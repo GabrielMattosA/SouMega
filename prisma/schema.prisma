@@ -17,6 +17,7 @@ model Member {
   diretoria String?
   time      String?
   projects  Project[]
+  password String
 }
 
 model Project {
