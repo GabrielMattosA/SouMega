@@ -1,6 +1,6 @@
     import React from 'react';
     import { ChevronRight, X, Users, Plus } from 'lucide-react';
-    import { useAuth } from '../contexto/AuthContext';
+    import { useAuth } from '../../contexto/AuthContext';
 
     function MemberPage() {
         

@@ -1,6 +1,6 @@
 import React from "react";
 import {Folder, Calendar, X, Plus} from 'lucide-react';
-import { useAuth } from "../contexto/AuthContext";
+import { useAuth } from "../../contexto/AuthContext";
 function ProjectPage() {
 
     const { ehDiretor } = useAuth();
