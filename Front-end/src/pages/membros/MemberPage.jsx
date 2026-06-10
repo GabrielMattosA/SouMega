@@ -171,7 +171,7 @@
                 <div className="bg-mega-card border border-gray-800 p-6 rounded-xl shadow-2xl w-full max-w-md">
                     <div className= "flex justify-between items-center mb-6">
                     <h3 className="text-lg font-bold text-white">Detalhes do Membro</h3>
-                    <button onClick={() => setMembroSelecionado(null)} className="text-gray-400 hover:text-red-400 transition-colors">
+                    <button onClick={() => setMembroSelecionado(null)} className="text-red-500 hover:text-red-700 transition-colors">
                     <X className="w-6 h-6" />
                     </button>
                     </div>
@@ -221,7 +221,7 @@
                         </div>
                         <div>
                             <label className="block text-sm text-gray-300 font-medium mb-1">RGA</label>
-                            <input type="text" name="rga" placeholder="Ex. 0000.0000.000-0" 
+                            <input type="text" name="rga" placeholder="Apenas números" 
                             value={novoMembro.rga}
                             onChange={atualizarForms}
                             className="w-full bg-mega-fundo border border-gray-700 text-white placeholder-gray-500 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-mega-roxo transition-all" />
