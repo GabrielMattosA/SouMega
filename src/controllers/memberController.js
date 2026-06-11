@@ -1,7 +1,7 @@
 import prisma from "../prisma/client.js";
 import bcrypt from "bcrypt";
-import { memberSchema } from "../schemas/memberSchema.js";
 import { gerarSenha } from "./passwordgenerate.js";
+import { handlePrismaError } from "../utils/prismaErrors.js";
 
 export async function createMember(req, res) {
   try {
@@ -12,9 +12,21 @@ export async function createMember(req, res) {
         ...req.body,
         password: senhaCripto,
       },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        rga: true,
+        cargo: true,
+        diretoria: true,
+        time: true,
+      },
     });
 
-    res.status(201).json(member);
+    res.status(201).json({
+      member,
+      senhaGerada: senha,
+    });
   } catch (error) {
     if (error.code === "P2002") {
       return res.status(400).json({
@@ -29,12 +41,22 @@ export async function createMember(req, res) {
 }
 export async function getMembers(req, res) {
   try {
-    const members = await prisma.member.findMany();
+    const members = await prisma.member.findMany({
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        rga: true,
+        cargo: true,
+        diretoria: true,
+        time: true,
+        projects: true,
+      },
+    });
 
     res.json(members);
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: "Erro interno do servidor" });
+    return handlePrismaError(error, res);
   }
 }
 
@@ -52,9 +74,7 @@ export async function deleteMember(req, res) {
       message: "Membro deletado",
     });
   } catch (error) {
-    res.status(500).json({
-      error: "Erro interno do servidor",
-    });
+    return handlePrismaError(error, res);
   }
 }
 
@@ -63,10 +83,17 @@ export async function updateMember(req, res) {
     const id = Number(req.params.id);
 
     const member = await prisma.member.update({
-      where: {
-        id,
-      },
+      where: { id },
       data: req.body,
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        rga: true,
+        cargo: true,
+        diretoria: true,
+        time: true,
+      },
     });
 
     res.json(member);

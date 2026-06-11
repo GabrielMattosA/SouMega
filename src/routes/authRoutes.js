@@ -4,7 +4,33 @@ import { login } from "../controllers/authController.js";
 
 const router = express.Router();
 
-//Rota para o login
+/**
+ * @swagger
+ * /auth/login:
+ *   post:
+ *     summary: Faz login pelo RGA e senha
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               rga:
+ *                 type: string
+ *                 example: "202519040073"
+ *               password:
+ *                 type: string
+ *                 example: "123"
+ *     responses:
+ *       200:
+ *         description: Login realizado com sucesso
+ *       401:
+ *         description: RGA ou senha inválidos
+ *       500:
+ *         description: Erro interno no login
+ */
 router.post("/login", login);
 
 router.get("/teste-auth", (req, res) => {

@@ -22,30 +22,6 @@ app.use("/projects", projectRoutes);
 
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-app.get("/criar-membro-teste", async (req, res) => {
-  const member = await prisma.member.create({
-    data: {
-      name: "Heitor",
-      email: "heitor@email.com",
-      rga: "202519040073",
-      cargo: "Membro",
-      diretoria: "TI",
-      time: "Backend",
-    },
-  });
-
-  res.json(member);
-});
-
-app.get("/teste-members", async (req, res) => {
-  const members = await prisma.member.findMany();
-  res.json(members);
-});
-
-app.get("/teste", (req, res) => {
-  res.send("OK");
-});
-
 app.get("/", (req, res) => {
   res.json({ message: "API SouMega rodando" });
 });

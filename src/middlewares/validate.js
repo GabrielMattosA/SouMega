@@ -4,7 +4,11 @@ export function validate(schema) {
 
     if (!result.success) {
       return res.status(400).json({
-        errors: result.error.issues.map((issue) => issue.message)
+        error: "Erro de validação",
+        details: result.error.errors.map((err) => ({
+          campo: err.path.join("."),
+          mensagem: err.message,
+        })),
       });
     }
 

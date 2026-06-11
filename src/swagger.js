@@ -1,24 +1,34 @@
-import swaggerJsdoc from "swagger-jsdoc"
+import swaggerJsdoc from "swagger-jsdoc";
 
-const options = {
+const swaggerSpec = swaggerJsdoc({
   definition: {
     openapi: "3.0.0",
     info: {
-      title: "API de membros",
+      title: "API SouMega",
       version: "1.0.0",
-      description: "CRUD de membros e projetos"
+      description: "Documentação da API SouMega",
     },
-
     servers: [
       {
-        url: "http://localhost:3000"
-      }
-    ]
+        url: "http://localhost:3000",
+        description: "Servidor local",
+      },
+      {
+        url: "https://soumega.onrender.com",
+        description: "Servidor Render",
+      },
+    ],
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT",
+        },
+      },
+    },
   },
+  apis: ["./src/routes/*.js"],
+});
 
-  apis: ["./src/routes/*.js"]
-}
-
-const swaggerSpec = swaggerJsdoc(options)
-
-export default swaggerSpec
+export default swaggerSpec;
