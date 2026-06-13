@@ -26,8 +26,9 @@ function DashboardPage() {
                 const respostaProjetos = await fetch(`${apiUrl}/projects/count`, { headers });
                 if (respostaProjetos.ok) {
                     const dadosProjetos = await respostaProjetos.json();
-                    const concluidos = dadosProjetos.filter(projeto => projeto.status === "Finalizado").length;
-                    const ativos = dadosProjetos.filter(projeto => projeto.status !== "Finalizado").length;
+                    const projetos = Array.isArray(dadosProjetos) ? dadosProjetos : [];
+                    const concluidos = projetos.filter(projeto => projeto.status === "Finalizado").length;
+                    const ativos = projetos.filter(projeto => projeto.status !== "Finalizado").length;
                     setProjetosConcluidos(concluidos);
                     setProjetosAtivos(ativos);
                 }

@@ -50,7 +50,11 @@
                         Authorization: `Bearer ${localStorage.getItem("token")}` },
                         body: JSON.stringify(novoMembro)
                     });
-                    if (!resposta.ok) throw new Error('Erro ao cadastrar membro.');
+                    if (!resposta.ok) {
+                        const erro = await resposta.json();
+                        console.log("ERRO DO BACK", erro);
+                        throw new Error(erro.error || 'Erro ao cadastrar membro.');
+                    }
                     const membroCriado = await resposta.json();
                     setMembrosDaMega([...membrosDaMega, membroCriado]);
                     alert('Membro cadastrado com sucesso!');
