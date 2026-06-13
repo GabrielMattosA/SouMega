@@ -28,15 +28,8 @@ export async function createMember(req, res) {
       senhaGerada: senha,
     });
   } catch (error) {
-    if (error.code === "P2002") {
-      return res.status(400).json({
-        error: `JÃ¡ existe um membro com esse ${error.meta.target[0]}.`,
-      });
-    }
-
-    res.status(500).json({
-      error: "Erro interno do servidor",
-    });
+    console.log("ERRO AO CRIAR MEMBRO:", error);
+    return handlePrismaError(error, res);
   }
 }
 export async function getMembers(req, res) {
@@ -98,8 +91,6 @@ export async function updateMember(req, res) {
 
     res.json(member);
   } catch (error) {
-    res.status(500).json({
-      error: "Erro interno do servidor",
-    });
+      return handlePrismaError(error, res);
+    };
   }
-}
