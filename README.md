@@ -1,4 +1,4 @@
-# Sistema de Gestão de Projetos e Membros da Mega Jr.- SouMega
+# SouMega - Sistema de Gestão de Projetos e Membros da Mega Jr.
 
 ## O projeto foi desenvolvido durante o processo seletivo da Mega
 
@@ -41,20 +41,82 @@
 - Swagger JSDoc v6.3.0 — geração da documentação da API
 - Swagger UI Express v5.0.1 — interface visual da documentação da API
 
-## Pré-requisitos
+## Funcionalidades mínimas (MVP)
 
+* **Controle de Acesso:** Sistema de login com validação de permissões por cargo (Diretor vs. Membro).
+* **Gestão de Membros:** Cadastrar, listar, editar e remover (CRUD completo).
+* **Gestão de Projetos:** Cadastrar, listar, editar e remover (CRUD completo).
+* **Alocação de Equipes:** Vinculação direta de membros aos projetos ativos.
+* **Dashboard Interativo:** Painel com indicadores reais mostrando os totais de membros e projetos.
+
+## Pré-requisistos
 Antes de executar o projeto, é necessário ter instalado:
 
 - Node.js v24.15.0
 - Git
 
-## Funcionalidades mínimas (MVP)
-
 ## Passos para instalação
+Certifique-se de ter instalado em sua máquina:
+
+- Node.js
+- npm
+
+### 1️. Clonar o Repositório
+
+```bash
+git clone URL_DO_REPOSITORIO
+cd soumega
+```
+
+### 2️. Instalar as Dependências
+
+#### Backend
+
+#### Frontend
+
+```bash
+cd frontend
+npm install
+```
+### 3️. Configurar as Variáveis de Ambiente
+
+#### Backend (`backend/.env`)
+
+
+#### Frontend (`frontend/.env`)
+
+```env
+VITE_API_URL= "https://soumega.onrender.com"
+```
+### 4️. Preparar o Banco de Dados
+
+
+### 5️. Executar a Aplicação
+
+#### Backend
+
+#### Frontend
+```bash
+npm run dev
+```
+
+### 6️. Acessar a Aplicação
+
+Frontend:
+
+Acesso Local:
+```text
+http://localhost:5173
+```
+
+Acesso Remoto:
+```text
+https://sou-mega.vercel.app/
+```
+
+Backend:
 
 ## Equipe
-
-- **Yuri** - Design
-- **Gabriel** - Front-end
-- **Diogo** - Back-end
-- **Heitor** - Back-end
+* **Gabriel** - Front-end
+* **Diogo** - Back-end
+* **Heitor** - Back-end 
