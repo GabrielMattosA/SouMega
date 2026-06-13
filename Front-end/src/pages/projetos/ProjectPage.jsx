@@ -181,7 +181,7 @@ function ProjectPage() {
             status: project.status,
             prazo: project.prazo,
             description: project.description,
-            members: project.members || []
+            members: project.members ? project.members.map(m => typeof m === 'object' ? m.id : m) : []       
         });
         setCadastro(true);
     }
