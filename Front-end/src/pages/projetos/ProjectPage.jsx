@@ -1,5 +1,5 @@
 import React from "react";
-import {FolderKanban, Calendar, X, Plus} from 'lucide-react';
+import {FolderKanban, Calendar, X, Plus, Users} from 'lucide-react';
 import { useAuth } from "../../contexto/AuthContext";
 function ProjectPage() {
 
@@ -185,9 +185,21 @@ function ProjectPage() {
         });
         setCadastro(true);
     }
+    const corDoStatus = (status) => {
+        switch (status) {
+            case 'Planejamento':
+                return 'bg-mega-roxo/20 text-white border-mega-roxo/50';
+            case 'Em andamento':
+                return 'bg-mega-amarelo/10 text-mega-amarelo border-mega-amarelo/30';
+            case 'Finalizado':
+                return 'bg-emerald-500/20 text-white border-emerald-500/50';
+            default:
+                return 'bg-gray-500/20 text-gray-400 border-gray-500/50';
+        }
+    };
 
-  return (
-    <div className="min-h-screen w-full bg-mega-fundo p-6 font-sans text-white">
+    return (
+        <div className="min-h-screen w-full bg-mega-fundo p-6 font-sans text-white">
         <div className ="max-w-6xl mx-auto"></div>
         <div className ="flex justify-between items-center mb-8">
             <h1 className="text-3xl font-bold flex items-center gap-3 text-white tracking-tight">
@@ -223,7 +235,7 @@ function ProjectPage() {
                         className="hover:bg-gray-800/50 transition cursor-pointer group">
                             <td className="p-5 font-medium text-white">{project.name}</td>
                             <td className="p-5">
-                                <span className="px-3 py-1.5 text-xs font-bold rounded-lg bg-mega-roxo/20 text-mega-roxo border border-mega-roxo/30">
+                                <span className={`px-3 py-1.5 text-xs font-bold rounded-lg ${corDoStatus(project.status)}`}>
                                     {project.status}
                                 </span>
                             </td>               
@@ -236,41 +248,71 @@ function ProjectPage() {
             </table>    
         </div>
             {AbrirModal && SelectedProject && (
-                <div className="fixed inset-0 bg-gray-70  backdrop-blur-sm flex justify-center items-center z-50 p-4">
+                <div className="fixed inset-0 bg-black/70  backdrop-blur-sm flex justify-center items-center z-50 p-4">
                     <div className="bg-mega-card rounded-xl shadow-2xl border border-gray-800 max-w-md w-full overflow-hidden animate-in fade-in duration-150">
-                        <div className="p-6 border-b border-gray-800 flex justify-between items-center">
+                        <div className="p-6 border-b border-gray-800 flex justify-between items-center bg-gray-800/20">
                             <h2 className="text-xl font-bold text-white">{SelectedProject.name}</h2>
                             <button type="button" onClick={FecharModal} className="p-1 text-gray-400 hover:text-red-400 transition-colors rounded-md focus:outline-none">
                             <X size={20} />
                             </button>
                         </div>
-                        <div className="p-6 space-y-5">
+                        <div className="p-6 space-y-6">
                         <div>
-                            <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">Status</span>
-                            <div className="mt-2">
-                            <span className="px-3 py-1.5 text-xs font-bold rounded-lg bg-mega-roxo/20 text-mega-roxo border border-mega-roxo/30">
-                                {SelectedProject.status}
-                            </span>
-                            </div>
-                        </div>
-                        <div>
-                            <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">Prazo Final</span>
-                            <p className="text-sm text-gray-300 flex items-center gap-2 mt-2">
-                                <Calendar size={14} /> {SelectedProject.prazo}
+                            <span className="text-xs font-bold text-gray-500 uppercase tracking-wider block mb-2">Descrição</span>
+                            <p className="text-sm text-gray-300 leading-relaxed bg-mega-fundo p-4 rounded-lg border border-gray-800">
+                                {SelectedProject.description || "Nenhuma descrição fornecida."}
                             </p>
                         </div>
-
+                        <div className="grid grid-cols-2 gap-4">
+                        <div className="bg-mega-fundo p-4 rounded-lg border border-gray-800">
+                            <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider block mb-2">Status</span>
+                            <span className={`px-3 py-1.5 text-xs font-bold rounded-lg ${corDoStatus(SelectedProject.status)}`}>
+                                {SelectedProject.status}
+                            </span>
+                        </div>
+                        <div className="bg-mega-fundo p-4 rounded-lg border border-gray-800">
+                            <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider block mb-2">Prazo Final</span>
+                            <p className="text-sm text-white flex items-center gap-2 font-medium">
+                                <Calendar size={16} className="text-mega-amarelo" /> {SelectedProject.prazo}
+                            </p>
+                        </div>
+                        </div>
                         <div>
-                            <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">Descrição</span>
-                            <p className="text-sm text-gray-300 mt-2 leading-relaxedbg-mega-fundo p-4 rounded-lg border border-gray-800">{SelectedProject.description || "Nenhuma descrição fornecida."}</p>    
+                            <span className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3 flex items-center gap-2">
+                                    <Users size={16} className="text-mega-amarelo" /> Membros Alocados
+                            </span>
+                            {SelectedProject.members && SelectedProject.members.length > 0 ? (
+                                <ul className="max-h-36 overflow-y-auto space-y-2 pr-2 custom-scrollbar">
+                                        {SelectedProject.members.map((membroItem) => {
+                                            const isObjeto = typeof membroItem === 'object';
+                                            const membroId = isObjeto ? membroItem.id : membroItem;
+                                            const nomeMembro = isObjeto ? membroItem.name : listaMembros.find(m => m.id === membroItem)?.name;
+                                            const cargoMembro = isObjeto ? membroItem.cargo : listaMembros.find(m => m.id === membroItem)?.cargo;
+
+                                            if (!nomeMembro) return null;
+
+                                            return (
+                                                <li key={membroId} className="flex items-center justify-between bg-mega-fundo border border-gray-800 p-3 rounded-lg">
+                                                    <span className="text-sm font-medium text-white">{nomeMembro}</span>
+                                                    <span className="text-[10px] uppercase font-bold text-mega-amarelo px-2 py-1 rounded-md bg-mega-amarelo/10 border border-mega-amarelo/20">
+                                                        {cargoMembro || "Membro"}
+                                                    </span>
+                                                </li>
+                                            );
+                                        })}
+                                    </ul>
+                                ) : (
+                                    <div className="text-sm text-gray-400 bg-mega-fundo p-4 rounded-lg border border-gray-800 text-center italic">
+                                        Nenhum membro alocado neste projeto.
+                                    </div>
+                                )}
                         </div>
                         {ehDiretor && (
-                            <div className="flex justify-end gap-3 pt-6 border-t border-gray-800 mt-8">
-                                <div className="flex gap-2">
+                            <div className="flex justify-end gap-3 pt-6 border-t border-gray-800 mt-2">
                                     <button 
                                         type="button" 
                                         onClick={() => prepararEdicao(SelectedProject)}
-                                        className="px-4 py-2 bg-mega-amarelo/20 text-mega-amarelo hover:bg-mega-amarelo hover:text-gray-900 rounded-lg font-bold text-sm transition-colors border border-mega-amarelo/30 hover:border-mega-amarelo"
+                                        className="px-4 py-2 bg-mega-amarelo/10 text-mega-amarelo hover:bg-mega-amarelo hover:text-gray-900 rounded-lg font-bold text-sm transition-colors border border-mega-amarelo/30 hover:border-mega-amarelo"
                                     >
                                         Editar Projeto
                                     </button>
@@ -281,7 +323,6 @@ function ProjectPage() {
                                         Excluir Projeto
                                     </button>
                                 </div>
-                            </div>
                             )}
                         </div>
                     </div>
