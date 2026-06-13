@@ -23,12 +23,12 @@ function DashboardPage() {
                     setMembrosCount(dadosMembros.count);
                 }
 
-                const respostaProjetos = await fetch(`${apiUrl}/projects/count`, { headers });
+                const respostaProjetos = await fetch(`${apiUrl}/projects`, { headers });
                 if (respostaProjetos.ok) {
                     const dadosProjetos = await respostaProjetos.json();
                     const projetos = Array.isArray(dadosProjetos) ? dadosProjetos : [];
                     const concluidos = projetos.filter(projeto => projeto.status === "Finalizado").length;
-                    const ativos = projetos.filter(projeto => projeto.status !== "Finalizado").length;
+                    const ativos = projetos.filter(projeto => projeto.status && projeto.status !== "Finalizado").length;
                     setProjetosConcluidos(concluidos);
                     setProjetosAtivos(ativos);
                 }

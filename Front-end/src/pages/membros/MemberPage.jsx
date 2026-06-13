@@ -178,13 +178,17 @@
                 <div className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4 backdrop-blur-sm">
                 <div className="bg-mega-card border border-gray-800 p-6 rounded-xl shadow-2xl w-full max-w-md">
                     <div className= "flex justify-between items-center mb-6">
-                    <h3 className="text-lg font-bold text-white">Detalhes do Membro</h3>
+                    <div>
+                    <h3 className="text-lg font-bold text-white mb-3">{membroSelecionado.name}</h3>
+                    <span className="px-3 py-1.5 text-xs font-bold rounded-lg border inline-block w-max bg-mega-roxo/20 text-white border-mega-roxo/50">
+                        {membroSelecionado.cargo || 'Membro'}
+                    </span>
                     <button onClick={() => setMembroSelecionado(null)} className="text-red-500 hover:text-red-700 transition-colors">
                     <X className="w-6 h-6" />
                     </button>
                     </div>
+                    </div>
                     <div className="space-y-4 text-sm text-gray-300">
-                        <p><strong>Nome:</strong> {membroSelecionado.name}</p>
                         <p><strong>RGA:</strong> {membroSelecionado.rga || 'Não informado'}</p>
                         <p><strong>Email:</strong> {membroSelecionado.email || 'Não informado'}</p>
                         <p><strong>Cargo:</strong> {membroSelecionado.cargo || 'Não informado'}</p>
@@ -221,6 +225,7 @@
                     <X className="w-6 h-6" />
                     </button>
                     </div>
+                    
                     <div className= "space-y-4">
                         <div>
                             <label className="block text-sm text-gray-300 font-medium mb-1">Nome Completo</label>
