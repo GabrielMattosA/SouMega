@@ -262,7 +262,7 @@
                         <div>
                             <label className="block text-sm font-medium text-gray-300 mb-2 mt-2">Diretoria</label>
                             <div className="grid grid-cols-2 gap-2">
-                                {['Presidência', 'Projetos', 'Comercial', 'Marketing', 'Gestão de Pessoas', 'Financeiro'].map((diretoria) => (
+                                {['Presidência', 'Projetos', 'Comercial', 'Marketing', 'Gente e Gestão', 'ADM-FIN'].map((diretoria) => (
                                     <label key={diretoria} className="flex items-center gap-3 p-3 border border-gray-700 rounded-lg hover:bg-gray-800 cursor-pointer text-sm text-gray-300 transition-colors">
                                         <input type="radio" name="diretoria" 
                                         value={diretoria} 

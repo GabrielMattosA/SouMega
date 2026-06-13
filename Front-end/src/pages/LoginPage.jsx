@@ -57,7 +57,7 @@
                     <form onSubmit={lidarLogin} className ="space-y-5">
                         <div>
                             <label className ="block text-sm font-medium text-mega-amarelo mb-1">RGA</label>
-                            <input type="text" placeholder="Ex: 0000.0000.000-0"
+                            <input type="text" placeholder="Digite apenas números"
                             value={rga} onChange={(e) => setRga(e.target.value)} className="w-full bg-mega-fundo border border-gray-700 text-white placeholder-gray-500 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-mega-roxo transition-all"/>
                         </div>
                         <div>
