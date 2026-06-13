@@ -6,20 +6,20 @@
 
 ## Stack utilizada
 
-- **Design:**
+### **Design:**
 
-* Figma
+- Figma
 
-- **Front-end:**
+### **Front-end:**
 
-* React v18.3.1
-* Vite v5.4.1
-* Tailwind CSS v4.3.0
+- React v18.3.1
+- Vite v5.4.1
+- Tailwind CSS v4.3.0
 
-- **Back-end:**
+### **Back-end:**
 
-* Node.js v24.15.0
-* Express v5.2.1
+- Node.js v24.15.0
+- Express v5.2.1
 
 ### ORM
 
@@ -43,19 +43,21 @@
 
 ## Funcionalidades mínimas (MVP)
 
-* **Controle de Acesso:** Sistema de login com validação de permissões por cargo (Diretor vs. Membro).
-* **Gestão de Membros:** Cadastrar, listar, editar e remover (CRUD completo).
-* **Gestão de Projetos:** Cadastrar, listar, editar e remover (CRUD completo).
-* **Alocação de Equipes:** Vinculação direta de membros aos projetos ativos.
-* **Dashboard Interativo:** Painel com indicadores reais mostrando os totais de membros e projetos.
+- **Controle de Acesso:** Sistema de login com validação de permissões por cargo (Diretor vs. Membro).
+- **Gestão de Membros:** Cadastrar, listar, editar e remover (CRUD completo).
+- **Gestão de Projetos:** Cadastrar, listar, editar e remover (CRUD completo).
+- **Alocação de Equipes:** Vinculação direta de membros aos projetos ativos.
+- **Dashboard Interativo:** Painel com indicadores reais mostrando os totais de membros e projetos.
 
 ## Pré-requisistos
+
 Antes de executar o projeto, é necessário ter instalado:
 
 - Node.js v24.15.0
 - Git
 
 ## Passos para instalação
+
 Certifique-se de ter instalado em sua máquina:
 
 - Node.js
@@ -72,30 +74,35 @@ cd soumega
 
 #### Backend
 
+```bash
+npm install
+```
+
 #### Frontend
 
 ```bash
 cd frontend
 npm install
 ```
+
 ### 3️. Configurar as Variáveis de Ambiente
 
 #### Backend (`backend/.env`)
-
 
 #### Frontend (`frontend/.env`)
 
 ```env
 VITE_API_URL= "https://soumega.onrender.com"
 ```
-### 4️. Preparar o Banco de Dados
 
+### 4️. Preparar o Banco de Dados
 
 ### 5️. Executar a Aplicação
 
 #### Backend
 
 #### Frontend
+
 ```bash
 npm run dev
 ```
@@ -105,11 +112,13 @@ npm run dev
 Frontend:
 
 Acesso Local:
+
 ```text
 http://localhost:5173
 ```
 
 Acesso Remoto:
+
 ```text
 https://sou-mega.vercel.app/
 ```
@@ -117,6 +126,7 @@ https://sou-mega.vercel.app/
 Backend:
 
 ## Equipe
-* **Gabriel** - Front-end
-* **Diogo** - Back-end
-* **Heitor** - Back-end 
+
+- **Gabriel** - Front-end
+- **Diogo** - Back-end
+- **Heitor** - Back-end
