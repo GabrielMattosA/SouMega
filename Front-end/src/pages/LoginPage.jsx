@@ -25,7 +25,7 @@
                 },
                 body: JSON.stringify({
                     rga: rga.trim(),
-                    senha: senha.trim(),
+                    password: senha.trim(),
                 }),
             });
 

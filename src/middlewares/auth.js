@@ -12,7 +12,7 @@ export function auth(req, res, next) {
 
   try {
     //Verifica se o token é válido
-    const decoded = jwt.verify(token, process.env.JWT_TOKEN);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     //Salva os dados na requisição
     req.user = decoded;

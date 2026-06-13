@@ -3,7 +3,7 @@ export function gerarSenha(name, rga) {
   const primeiraLetra = dividirNome[0][0];
   let sobrenome;
 
-  if (dividirNome.length >= 3) {
+  if (dividirNome.length >= 2) {
     sobrenome = dividirNome[dividirNome.length - 1].toLowerCase();
   } else {
     sobrenome = "noHave";

@@ -28,6 +28,8 @@ const router = express.Router();
  *         description: Login realizado com sucesso
  *       401:
  *         description: RGA ou senha inválidos
+ *       500:
+ *         description: Erro interno no login
  */
 router.post("/login", login);
 
