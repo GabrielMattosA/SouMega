@@ -20,6 +20,7 @@
 
 - Node.js v24.15.0
 - Express v5.2.1
+- PostgreSQL
 
 ### ORM
 
@@ -89,6 +90,12 @@ npm install
 
 #### Backend (`backend/.env`)
 
+```env
+DATABASE_URL="SUA_DATABASE_URL"
+JWT_SECRET="SEU_JWT_SECRET"
+PORT=3000
+```
+
 #### Frontend (`frontend/.env`)
 
 ```env
@@ -96,10 +103,25 @@ VITE_API_URL= "https://soumega.onrender.com"
 ```
 
 ### 4️. Preparar o Banco de Dados
+Executar as migrações do Prisma:
+
+```bash
+npx prisma generate
+npx prisma db push
+```
+
+Opcionalmente(para alterar membros diretamente do banco):
+
+```bash
+npx prisma studio
+```
 
 ### 5️. Executar a Aplicação
 
 #### Backend
+```bash
+node server.js
+```
 
 #### Frontend
 
@@ -124,6 +146,28 @@ https://sou-mega.vercel.app/
 ```
 
 Backend:
+
+Acesso Local:
+
+```text
+http://localhost:3000
+```
+
+Acesso Remoto:
+
+```text
+https://soumega.onrender.com
+```
+
+## Documentação da API
+
+Acesso Local:
+
+http://localhost:3000/docs
+
+Acesso Remoto:
+
+https://soumega.onrender.com/docs
 
 ## Equipe
 
