@@ -184,7 +184,7 @@
                     <X size={20} />
                     </button>
                     </div>
-                    </div>
+
                     <div className="p-6 space-y-6">
                     <div>
                         <span className="text-xs font-bold text-gray-500 uppercase tracking-wider block mb-2">E-mail Institucional</span>
@@ -238,6 +238,7 @@
                         </button>
                     </div>
                     )}
+                    </div>
                 </div>
                 </div>
             )}
