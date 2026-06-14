@@ -176,40 +176,67 @@
 
             {membroSelecionado && (
                 <div className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4 backdrop-blur-sm">
-                <div className="bg-mega-card border border-gray-800 p-6 rounded-xl shadow-2xl w-full max-w-md">
-                    <div className= "flex justify-between items-center mb-6">
-                    <div>
-                    <h3 className="text-lg font-bold text-white mb-3">{membroSelecionado.name}</h3>
-                    <span className="px-3 py-1.5 text-xs font-bold rounded-lg border inline-block w-max bg-mega-roxo/20 text-white border-mega-roxo/50">
-                        {membroSelecionado.cargo || 'Membro'}
-                    </span>
+                <div className="bg-mega-card border border-gray-800 overflow-hidden rounded-xl shadow-2xl w-full max-w-md">
+                    <div className= "p-6 border-b border-gray-800 flex justify-between items-center bg-gray-800/20">
+                    
+                    <h3 className="text-xl font-bold text-white truncate pr-4">{membroSelecionado.name}</h3>
                     <button onClick={() => setMembroSelecionado(null)} className="text-red-500 hover:text-red-700 transition-colors">
-                    <X className="w-6 h-6" />
+                    <X size={20} />
                     </button>
                     </div>
                     </div>
-                    <div className="space-y-4 text-sm text-gray-300">
-                        <p><strong>RGA:</strong> {membroSelecionado.rga || 'Não informado'}</p>
-                        <p><strong>Email:</strong> {membroSelecionado.email || 'Não informado'}</p>
-                        <p><strong>Cargo:</strong> {membroSelecionado.cargo || 'Não informado'}</p>
-                        <p><strong>Diretoria:</strong> {membroSelecionado.diretoria || 'Não informado'}</p>
-                        <p><strong>Time Principal:</strong> {membroSelecionado.time || 'Não informado'}</p>
+                    <div className="p-6 space-y-6">
+                    <div>
+                        <span className="text-xs font-bold text-gray-500 uppercase tracking-wider block mb-2">E-mail Institucional</span>
+                        <p className="text-sm text-gray-300 bg-mega-fundo p-4 rounded-lg border border-gray-800 truncate" title={membroSelecionado.email}>
+                            {membroSelecionado.email || "Não informado"}
+                        </p>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                        <div className="bg-mega-fundo p-4 rounded-lg border border-gray-800">
+                            <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider block mb-2">Cargo</span>
+                            <span className="px-3 py-1.5 text-xs font-bold rounded-lg border inline-block w-max bg-mega-roxo/20 text-white border-mega-roxo/50">
+                                {membroSelecionado.cargo || 'Membro'}
+                            </span>
+                        </div>
+                        <div className="bg-mega-fundo p-4 rounded-lg border border-gray-800">
+                            <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider block mb-2">RGA</span>
+                            <p className="text-sm text-white font-medium">
+                                {membroSelecionado.rga || 'Não informado'}
+                            </p>
+                        </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                        <div className="bg-mega-fundo p-4 rounded-lg border border-gray-800">
+                            <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider block mb-2">Diretoria</span>
+                            <p className="text-sm text-white font-medium">
+                                {membroSelecionado.diretoria || 'Não informado'}
+                            </p>
+                        </div>  
+                        <div className="bg-mega-fundo p-4 rounded-lg border border-gray-800">
+                            <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider block mb-2">Time Principal</span>
+                            <p className="text-sm text-white font-medium">
+                                {membroSelecionado.time || 'Não informado'}
+                            </p>
+                        </div>
                     </div>
                     {ehDiretor && (
-                    <div className="mt-8 pt-6 border-t border-gray-800 flex justify-end gap-3">
-                            <button 
-                                onClick={() => excluirMembro(membroSelecionado.id)}
-                                className="px-4 py-2 bg-red-900/30 text-red-400 hover:bg-red-600 hover:text-white rounded-lg font-bold text-sm transition-colors border border-red-900/50 hover:border-red-600"
-                            >
-                                Excluir Membro
-                            </button>
-                            <button 
-                                onClick={() => prepararEdicao(membroSelecionado)}
-                                className="px-4 py-2 bg-mega-amarelo/20 text-mega-amarelo hover:bg-mega-amarelo hover:text-gray-900 rounded-lg font-bold text-sm transition-colors border border-mega-amarelo/30 hover:border-mega-amarelo"
-                            >
-                                Editar Membro
-                            </button>
-                        </div>
+                    <div className="flex justify-end gap-3 pt-6 border-t border-gray-800 mt-2">
+                        <button 
+                            type="button" 
+                            onClick={() => prepararEdicao(membroSelecionado)}
+                            className="px-4 py-2 bg-mega-amarelo/10 text-mega-amarelo hover:bg-mega-amarelo hover:text-gray-900 rounded-lg font-bold text-sm transition-colors border border-mega-amarelo/30 hover:border-mega-amarelo"
+                        >
+                            Editar Membro
+                        </button>
+                        <button 
+                            type="button" 
+                            onClick={() => excluirMembro(membroSelecionado.id)}
+                            className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-bold text-sm transition-colors shadow-sm"
+                        >
+                            Excluir Membro
+                        </button>
+                    </div>
                     )}
                 </div>
                 </div>
